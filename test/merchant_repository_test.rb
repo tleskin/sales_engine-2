@@ -20,4 +20,9 @@ class MerchantRepoTest < Minitest::Test
   def test_merchant_repo_is_not_empty
     refute merchant_repo.merchants.empty?
   end
+
+  def test_it_returns_all_merchant_records
+    merchant_repo = MerchantRepo.load('./data/merchants.csv')
+    assert_equal 100, merchant_repo.all.count
+  end
 end

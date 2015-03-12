@@ -15,4 +15,8 @@ class MerchantRepo
     end
     new(rows)
   end
+
+  def all
+    @merchants
+  end
 end

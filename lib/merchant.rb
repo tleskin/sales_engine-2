@@ -32,10 +32,6 @@ class Merchant
     @updated_at = data[:updated_at]
   end
 
-  def all
-    @merchant
-  end
-
   def items
 
   end
