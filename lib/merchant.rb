@@ -33,7 +33,7 @@ class Merchant
   end
 
   def all
-    @merchant_repo
+    @merchant
   end
 
   def items
@@ -52,5 +52,3 @@ class Merchant
 
   end
 end
-
-
