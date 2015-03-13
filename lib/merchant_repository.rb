@@ -21,7 +21,7 @@ class MerchantRepository
     rows = data.map do |row|
       Merchant.new(row)
     end
-    new(rows)
+    new(rows, sales_engine)
   end
 
   def all
