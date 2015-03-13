@@ -17,7 +17,7 @@ class InvoiceTest < Minitest::Test
   end
 
   def setup
-    @invoice = Invoice.new(sample_data)
+    @invoice = Invoice.new(sample_data, self)
   end
 
   def test_it_exists

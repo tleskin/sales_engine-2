@@ -19,7 +19,7 @@ class MerchantTest < Minitest::Test
     @merchant = Merchant.new(sample_data)
   end
 
-  def test_it_has_an_id=
+  def test_it_has_an_id
     assert_equal 1, @merchant.id
   end
 

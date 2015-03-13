@@ -9,7 +9,7 @@ class SalesEngine
   end
 
   def startup
-    @merchant_repository = MerchantRepository.new(filepath)
+    @merchant_repository = MerchantRepository.new(filepath, self)
     file_path = "#{@filepath}/merchants.csv"
     @merchants = CSV.open(file_path,
                           headers: true,
