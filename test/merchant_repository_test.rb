@@ -10,7 +10,7 @@ class MerchantRepoTest < Minitest::Test
   end
 
   def setup
-    @merchant_repository = MerchantRepository.load('./data/merchants.csv')
+    @merchant_repository = MerchantRepository.load(self, './data/merchants.csv')
   end
 
   def test_that_merchant_repo_contains_merchant_data
@@ -22,7 +22,7 @@ class MerchantRepoTest < Minitest::Test
   end
 
   def test_it_returns_all_merchant_records
-    merchant_repo = MerchantRepository.load('./data/merchants.csv')
+    merchant_repo = MerchantRepository.load(self, './data/merchants.csv')
     assert_equal 100, merchant_repository.all.count
   end
 
