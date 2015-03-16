@@ -1,68 +1,66 @@
 require_relative 'test_helper'
-require '../lib/transaction_repository'
+require_relative '../lib/transaction_repository'
 
 class TransactionRepositoryTest < Minitest::Test
 
   attr_reader :transaction_repository
 
-  def test_it_exitsts
+  def test_it_exists
     assert TransactionRepository
   end
 
   def setup
-    @transaction_repository = TransactionRepository.load('./data/transactions.csv')
+    @transaction_repository = TransactionRepository.load(self, '../data/transactions.csv')
   end
 
-  def test_that_transaction_repo_containts_transaction_data
-    assert_equal 5596, transaction_repository.transactions.count
+  def test_that_transaction_repo_contains_data
+    assert_equal 5595, @transaction_repository.transactions.count
   end
 
-  def test_that_transaction_repo_is_not_empty
-    refute transaction_repository.transactions.empty?
+  def test_transaction_repository_is_not_empty
+    refute @transaction_repository.transactions.empty?
   end
 
-  def test_it_returns_all_transaction_records
-    transaction_repo = TransactionRepository.load('./data/transactions.csv')
-    assert_equal 5596, transaction_repository.all.count
+  def test_it_returns_all_transaction_items
+
+    transaction_repo = TransactionRepository.load(self, '../data/transactions.csv')
+    assert_equal 5595, transaction_repo.all.count
   end
 
   def test_it_grabs_a_random_transaction
+
     transaction = @transaction_repository.random
-    assert_equal Transaction, transaction.class
+    assert_equal Transactions, transaction.class
   end
 
-  def test_it_finds_a_transaction_by_id
-    results = transaction_repository.find_by_id(1)
-    assert_equal 1, results.id
+  def test_it_finds_transaction_by_invoice_id
+    results = @transaction_repository.find_by_invoice_id(1)
+    assert_equal 1, results.invoice_id
   end
 
-  def test_it_finds_a_transaction_by_name
-    results = transaction_repository.find_by_name("Insert Transaction CSV Data here")
-    assert_equal "Transasction CSV Data", results.name
+  def test_it_finds_transaction_by_credit_card_number
+    results = @transaction_repository.find_by_credit_card_number(4654405418249632)
+    assert_equal 4654405418249632, results.credit_card_number
   end
 
   def test_it_finds_a_transaction_by_created_at
-    results = transaction_repository.find_by_created_at("Insert Transaction CSV Data here")
-    assert_equal "TransactionCSV DATA here", results.created_at
+    results = @transaction_repository.find_by_created_at("2012-03-27 14:54:09 UTC")
+    assert_equal "2012-03-27 14:54:09 UTC", results.created_at
   end
 
   def test_it_finds_a_transaction_by_updated_at
-    results = transaction_repository.find_by_updated_at("Insert TransactionCSV data here")
-    assert_equal "TransactionCSV Data here", results.updated_at
+    results = @transaction_repository.find_by_updated_at("2012-03-27 14:54:09 UTC")
+    assert_equal "2012-03-27 14:54:09 UTC", results.updated_at
   end
 
-  def test_it_finds_all_by_name
-    results = transaction_repository.find_all_by_name("Transaction Data here")
+  def test_it_finds_all_created_at
+    results = @transaction_repository.find_all_by_created_at("2012-03-27 14:54:09 UTC")
     assert_equal 2, results.count
   end
 
-  def test_it_finds_all_by_created_at
-    results = transaction_repository.find_all_by_created_at("Transactions CSV data")
-    assert_equal 9, results.count
-  end
-
-  def test_it_finds_all_by_created_at
-    results = transaction_repository.find_all_by_updated_at("Transaction CSV data")
-    assert_equal 8, results.count
+  def test_it_finds_all_updated_at
+    results = @transaction_repository.find_all_by_updated_at("2012-03-27 14:54:09 UTC")
+    assert_equal 2, results.count
   end
 end
+
