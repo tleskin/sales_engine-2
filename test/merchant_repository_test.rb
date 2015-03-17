@@ -10,11 +10,11 @@ class MerchantRepoTest < Minitest::Test
   end
 
   def setup
-    @merchant_repository = MerchantRepository.load(self, './data/merchants.csv')
+    @merchant_repository = MerchantRepository.load(self, './test/test_fixtures/merchants_sample.csv')
   end
 
   def test_that_merchant_repo_contains_merchant_data
-    assert_equal 100, merchant_repository.merchants.count
+    assert_equal 20, merchant_repository.merchants.count
   end
 
   def test_merchant_repo_is_not_empty
@@ -22,8 +22,7 @@ class MerchantRepoTest < Minitest::Test
   end
 
   def test_it_returns_all_merchant_records
-    merchant_repo = MerchantRepository.load(self, './data/merchants.csv')
-    assert_equal 100, merchant_repository.all.count
+    assert_equal 20, merchant_repository.all.count
   end
 
   def test_it_grabs_a_random_merchant

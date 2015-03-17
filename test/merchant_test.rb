@@ -35,4 +35,11 @@ class MerchantTest < Minitest::Test
     assert_equal "2012-03-27 14:53:59 UTC", @merchant.updated_at
   end
 
+  def test_it_returns_all_items_associated_with_merchant
+    
+  end
+
+
+
+
 end

@@ -5,12 +5,12 @@ class ItemRepositoryTest < Minitest::Test
 
   attr_reader :item_repository
 
-  def test_it_exists
-    assert ItemRepository
+  def setup
+    @item_repository = ItemRepository.load(self, './test/test_fixtures/items_sample.csv')
   end
 
-  def setup
-    @item_repository = ItemRepository.load(self, './data/items_sample.csv')
+  def test_it_exists
+    assert ItemRepository
   end
 
   def test_that_item_repo_contains_item_data
@@ -46,8 +46,8 @@ class ItemRepositoryTest < Minitest::Test
   end
 
   def test_it_finds_an_item_by_unit_price
-    results = item_repository.find_by_unit_price(75107)
-    assert_equal 75107, results.unit_price
+    results = item_repository.find_by_unit_price(BigDecimal.new("751.07"))
+    assert_equal BigDecimal.new("751.07"), results.unit_price
   end
 
   def test_it_finds_an_item_by_created_at
@@ -76,8 +76,7 @@ class ItemRepositoryTest < Minitest::Test
   end
 
   def test_it_finds_all_items_by_unit_price
-    results = item_repository.find_all_by_unit_price(75107)
-    assert_equal 1, results.count
+    assert_equal 1, item_repository.find_all_by_unit_price(BigDecimal.new("75107")).count
   end
 
   def test_it_finds_all_items_by_merchant_id
@@ -94,5 +93,4 @@ class ItemRepositoryTest < Minitest::Test
     results = item_repository.find_all_by_updated_at("2012-03-27 14:53:59 UTC")
     assert_equal 19, results.count
   end
-
 end

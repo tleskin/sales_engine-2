@@ -13,6 +13,4 @@ class Invoice
     @updated_at = data[:updated_at]
     @sales_engine = sales_engine
   end
-
-
 end

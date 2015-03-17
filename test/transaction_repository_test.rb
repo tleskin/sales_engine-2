@@ -10,11 +10,11 @@ class TransactionRepositoryTest < Minitest::Test
   end
 
   def setup
-    @transaction_repository = TransactionRepository.load(self, '../data/transactions.csv')
+    @transaction_repository = TransactionRepository.load(self, './test/test_fixtures/transactions_sample.csv')
   end
 
   def test_that_transaction_repo_contains_data
-    assert_equal 5595, @transaction_repository.transactions.count
+    assert_equal 20, @transaction_repository.transactions.count
   end
 
   def test_transaction_repository_is_not_empty
@@ -22,15 +22,13 @@ class TransactionRepositoryTest < Minitest::Test
   end
 
   def test_it_returns_all_transaction_items
-
-    transaction_repo = TransactionRepository.load(self, '../data/transactions.csv')
-    assert_equal 5595, transaction_repo.all.count
+    assert_equal 20, transaction_repository.all.count
   end
 
   def test_it_grabs_a_random_transaction
 
     transaction = @transaction_repository.random
-    assert_equal Transactions, transaction.class
+    assert_equal Transaction, transaction.class
   end
 
   def test_it_finds_transaction_by_invoice_id
@@ -39,8 +37,8 @@ class TransactionRepositoryTest < Minitest::Test
   end
 
   def test_it_finds_transaction_by_credit_card_number
-    results = @transaction_repository.find_by_credit_card_number(4654405418249632)
-    assert_equal 4654405418249632, results.credit_card_number
+    results = @transaction_repository.find_by_credit_card_number("4654405418249632")
+    assert_equal "4654405418249632", results.credit_card_number
   end
 
   def test_it_finds_a_transaction_by_created_at
@@ -62,5 +60,9 @@ class TransactionRepositoryTest < Minitest::Test
     results = @transaction_repository.find_all_by_updated_at("2012-03-27 14:54:09 UTC")
     assert_equal 2, results.count
   end
-end
 
+  def test_it_finds_all_by_result
+    results = @transaction_repository.find_all_by_result("success")
+    assert_equal 16, results.count
+  end
+end

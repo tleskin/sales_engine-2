@@ -3,10 +3,6 @@ require './lib/customer.rb'
 
 class CustomerTest < Minitest::Test
 
-  def test_it_exists
-    assert Customer
-  end
-
    def sample_data
      {
       id: "1",
@@ -19,6 +15,10 @@ class CustomerTest < Minitest::Test
 
   def setup
     @customer = Customer.new(sample_data, sales_engine=nil)
+  end
+
+  def test_it_exists
+    assert Customer
   end
 
   def test_it_has_an_id
@@ -40,5 +40,4 @@ class CustomerTest < Minitest::Test
   def test_it_has_an_updated_date
     assert_equal "2012-03-27 14:55:09 UTC", @customer.updated_at
   end
-
 end
