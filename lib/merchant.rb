@@ -2,23 +2,23 @@ require 'csv'
 
 class Merchant
   attr_reader :id, :name, :created_at, :updated_at,
-              :sales_engine
+              :repository
 
-  def initialize(data, sales_engine)
+  def initialize(data, repository)
     @id = data[:id].to_i
     @name = data[:name]
     @created_at = data[:created_at]
     @updated_at = data[:updated_at]
-    @sales_engine = sales_engine
+    @repository = repository
   end
 
   def items
-
+    repository.find_all_items_by_merchant_id(id)
   end
 
-  def invoice
-
-  end
+  # def invoice
+  #   repository.find_all_items_by_merchant_id
+  # end
 
   def customer_with_pending
 

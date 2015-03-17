@@ -1,15 +1,15 @@
 class Customer
 
   attr_reader :id, :first_name, :last_name,
-              :created_at, :updated_at, :sales_engine
+              :created_at, :updated_at, :repository
 
-  def initialize(data, sales_engine)
+  def initialize(data, repository)
     @id = data[:id].to_i
     @first_name = data[:first_name]
     @last_name = data[:last_name]
     @created_at = data[:created_at]
     @updated_at = data[:updated_at]
-    @sales_engine = sales_engine
+    @repository = repository
   end
 
 

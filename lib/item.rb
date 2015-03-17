@@ -1,5 +1,4 @@
 require 'bigdecimal'
-require 'bigdecimal/util'
 class Item
 
   attr_accessor :id, :name, :merchant_id, :updated_at,
