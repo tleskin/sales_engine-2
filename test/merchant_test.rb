@@ -35,11 +35,11 @@ class MerchantTest < Minitest::Test
     assert_equal "2012-03-27 14:53:59 UTC", @merchant.updated_at
   end
 
-  def test_it_returns_all_items_associated_with_merchant
-    
-  end
-
-
-
-
+  # def test_it_will_return_items_associated_with_the_merchant
+  #     sales_engine = MiniTest::Mock.new
+  #     repo = MerchantRepository.load(sales_engine, "./test/test_fixtures/merchants_sample.csv")
+  #     sales_engine.expect(:find_all_by_merchant_id,[1],[1])
+  #     assert_equal [1], repo.items(1)
+  #     sales_engine.verify
+  #   end
 end

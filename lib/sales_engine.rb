@@ -49,6 +49,10 @@ class SalesEngine
     @invoice_item_repository = InvoiceItemRepository.load(self, "#{file_path}/invoice_items.csv")
   end
 
+  def find_all_items_by_merchant_id(id)
+    @item_repository.find_all_by_merchant_id(id)
+  end
+
 end
 #
 #

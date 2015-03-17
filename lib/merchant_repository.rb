@@ -24,7 +24,7 @@ class MerchantRepository
   def inspect
     "#<#{self.class} #{customer.size} rows>"
   end
-  
+
   def all
     @merchants
   end
@@ -49,6 +49,10 @@ class MerchantRepository
     @merchants.detect {|merchant| merchant.updated_at == updated_at}
   end
 
+  def find_all_by_id(id)
+    @merchants.select {|merchant| merchant.id == id}
+  end
+
   def find_all_by_name(name)
     @merchants.select {|merchant| merchant.name == name}
   end
@@ -60,6 +64,11 @@ class MerchantRepository
   def find_all_by_updated_at(updated_at)
     @merchants.select {|merchant| merchant.updated_at == updated_at}
   end
+
+  def find_all_items_by_merchant_id(id)
+    @engine.find_all_items_by_merchant_id(id)
+  end
+
 
 
 end
