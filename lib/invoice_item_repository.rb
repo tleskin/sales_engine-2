@@ -45,6 +45,10 @@ class InvoiceItemRepository
     @invoice_items.select {|item| item.quantity == quantity}
   end
 
+  def find_all_by_invoice_id(invoice_id)
+    @invoice_items.select {|item| item.invoice_id == invoice_id}
+  end
+
   def find_by_created_at(created_at)
     @invoice_items.detect {|item| item.created_at == created_at}
   end
