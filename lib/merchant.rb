@@ -16,15 +16,9 @@ class Merchant
     repository.find_all_items_by_merchant_id(id)
   end
 
-  # def invoice
-  #   repository.find_all_items_by_merchant_id
-  # end
+  def invoices
+    repository.find_all_invoices_by_merchant_id(id)
+  end
 
-  # def customer_with_pending
-  #
-  # end
-  #
-  # def revenue_to_date
-  #
-  # end
+
 end
