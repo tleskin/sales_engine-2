@@ -1,5 +1,5 @@
 require 'csv'
-require_relative './merchant'
+require_relative 'merchant'
 
 class MerchantRepository
   attr_reader :merchants, :sales_engine
@@ -13,10 +13,6 @@ class MerchantRepository
     @sales_engine = sales_engine
   end
 
-  def inspect
-    "#<#{self.class} #{customer.size} rows>"
-  end
-
   def self.load(sales_engine, file)
     data = CSV.open(file, headers: true, header_converters: :symbol)
     rows = data.map do |row|
@@ -25,6 +21,10 @@ class MerchantRepository
     new(rows, sales_engine)
   end
 
+  def inspect
+    "#<#{self.class} #{customer.size} rows>"
+  end
+  
   def all
     @merchants
   end

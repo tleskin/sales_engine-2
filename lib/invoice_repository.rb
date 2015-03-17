@@ -18,6 +18,10 @@ class InvoiceRepository
     new(rows, sales_engine)
   end
 
+  def inspect
+    "#<#{self.class} #{customer.size} rows>"
+  end
+
   def all
     @invoices
   end
@@ -56,6 +60,10 @@ class InvoiceRepository
 
   def find_all_by_merchant_id(merchant_id)
     @invoices.select {|invoice| invoice.merchant_id == merchant_id}
+  end
+
+  def find_all_by_status(status)
+    @invoices.select {|invoice| invoice.status == status}
   end
 
   def find_all_by_created_at(created_at)

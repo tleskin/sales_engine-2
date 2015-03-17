@@ -10,7 +10,7 @@ class CustomerRepositoryTest < Minitest::Test
   end
 
   def setup
-    @customer_repository = CustomerRepository.load(self, './data/customers_sample.csv')
+    @customer_repository = CustomerRepository.load(self, './test/test_fixtures/customers_sample.csv')
   end
 
   def test_that_customer_repo_contains_customer_data
@@ -74,5 +74,4 @@ class CustomerRepositoryTest < Minitest::Test
     results = customer_repository.find_all_by_updated_at("2012-03-27 14:54:12 UTC")
     assert_equal 3, results.count
   end
-
 end

@@ -3,10 +3,6 @@ require './lib/item.rb'
 
 class ItemTest < Minitest::Test
 
-  def test_it_exists
-    assert Item
-  end
-
   def sample_data
     {
       id: "1",
@@ -23,6 +19,10 @@ class ItemTest < Minitest::Test
     @item = Item.new(sample_data, sales_engine=nil)
   end
 
+  def test_it_exists
+    assert Item
+  end
+
   def test_it_has_an_id
     assert_equal 1, @item.id
   end
@@ -36,7 +36,7 @@ class ItemTest < Minitest::Test
   end
 
   def test_it_has_a_unit_price
-    assert_equal 75107, @item.unit_price
+    assert_equal BigDecimal.new("751.07"), @item.unit_price
   end
 
   def test_it_has_a_merchant_id
@@ -50,5 +50,4 @@ class ItemTest < Minitest::Test
   def test_it_has_an_updated_date
     assert_equal "2012-03-27 14:54:59 UTC", @item.updated_at
   end
-
 end

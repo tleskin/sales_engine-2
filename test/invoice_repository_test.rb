@@ -6,7 +6,7 @@ class InvoiceRepositoryTest < Minitest::Test
   attr_reader :invoice_repository
 
   def setup
-    @invoice_repository = InvoiceRepository.load(self, './data/invoices_sample.csv')
+    @invoice_repository = InvoiceRepository.load(self, './test/test_fixtures/invoices_sample.csv')
   end
 
   def test_it_exists
@@ -64,6 +64,11 @@ class InvoiceRepositoryTest < Minitest::Test
   def test_it_finds_all_invoices_by_merchant_id
     results = invoice_repository.find_all_by_merchant_id(26)
     assert_equal 2, results.count
+  end
+
+  def test_it_finds_all_invoices_by_status
+    results = invoice_repository.find_all_by_status("shipped")
+    assert_equal 10, results.count
   end
 
   def test_it_finds_all_invoices_by_created_at

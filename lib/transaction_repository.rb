@@ -1,5 +1,5 @@
 require 'csv'
-require_relative './transactions'
+require_relative 'transaction'
 
 class TransactionRepository
   attr_reader :transactions
@@ -13,9 +13,13 @@ class TransactionRepository
   def self.load(sales_engine, file)
     data = CSV.open(file, headers: true, header_converters: :symbol)
     rows = data.map do |row|
-      Transactions.new(row, sales_engine)
+      Transaction.new(row, sales_engine)
     end
     new(rows, sales_engine)
+  end
+
+  def inspect
+    "#<#{self.class} #{customer.size} rows>"
   end
 
   def all
@@ -50,5 +54,8 @@ class TransactionRepository
     @transactions.select {|transaction|transaction.updated_at == updated_at}
   end
 
-end
+  def find_all_by_result(result)
+    @transactions.select {|transaction|transaction.result == result}
+  end
 
+end

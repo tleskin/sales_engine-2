@@ -18,6 +18,10 @@ class CustomerRepository
     new(rows, sales_engine)
   end
 
+  def inspect
+    "#<#{self.class} #{customer.size} rows>"
+  end
+
   def all
     @customers
   end

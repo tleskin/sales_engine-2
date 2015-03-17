@@ -1,5 +1,7 @@
 require 'csv'
 require_relative 'item'
+require 'bigdecimal'
+require 'bigdecimal/util'
 
 class ItemRepository
 
@@ -8,6 +10,10 @@ class ItemRepository
   def initialize(items, sales_engine)
     @items = items
     @sales_engine = sales_engine
+  end
+
+  def inspect
+    "#<#{self.class} #{customer.size} rows>"
   end
 
   def self.load(sales_engine, file)
@@ -46,7 +52,6 @@ class ItemRepository
     @items.detect {|item| item.merchant_id == merchant_id}
   end
 
-
   def find_by_created_at(created_at)
     @items.detect {|item| item.created_at == created_at}
   end
@@ -64,7 +69,7 @@ class ItemRepository
   end
 
   def find_all_by_unit_price(unit_price)
-    @items.select {|item| item.unit_price == unit_price}
+    @items.select {|item| item.unit_price == unit_price.to_d/100}
   end
 
   def find_all_by_merchant_id(merchant_id)
@@ -78,5 +83,4 @@ class ItemRepository
   def find_all_by_updated_at(updated_at)
     @items.select {|item| item.updated_at == updated_at}
   end
-
 end
