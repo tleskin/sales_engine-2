@@ -46,18 +46,19 @@ class SalesEngine
   end
 
   def invoice_item_repository
-    @invoice_item_repository = InvoiceItemRepository.load(self, "#{file_path}/invoice_items.csv")
+    invoice_item_repository = InvoiceItemRepository.load(self, "#{file_path}/invoice_items.csv")
   end
 
   def find_all_items_by_merchant_id(id)
-    @item_repository.find_all_by_merchant_id(id)
+    item_repository.find_all_by_merchant_id(id)
   end
 
 end
-#
-#
+
+
 # if __FILE__ == $0
-# engine = SalesEngine.new("/data")
-# engine.startup
-# engine.merchant_repo
+  # engine = SalesEngine.new("./data")
+  # engine.startup
+  # merchant = engine.merchant_repository.find_by_name("Kirlin, Jakubowski and Smitham")
+  # puts merchant.items
 # end
