@@ -29,4 +29,12 @@ class Invoice
   def customer
     repository.find_all_customers_by_customer_id(customer_id)
   end
+
+  def pending?
+    transactions.all? {|transaction| transaction.pending?}
+  end
+
+  def successful?
+    transactions.all? {|transaction| transaction.successful?}
+  end
 end
