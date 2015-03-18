@@ -30,6 +30,10 @@ class TransactionRepository
     @transactions.sample
   end
 
+  def find_by_id(id)
+    @transactions.detect {|transaction|transaction.id == id}
+  end
+
   def find_by_invoice_id(invoice_id)
     @transactions.detect {|transaction|transaction.invoice_id == invoice_id}
   end
