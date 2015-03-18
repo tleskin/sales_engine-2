@@ -97,6 +97,11 @@ class SalesEngine
     invoice_repository.find_by_id(invoice_id)
   end
 
+  def find_invoice_by_invoice_id(id)
+    invoice_repository.find_by_invoice_id(id)
+
+  end
+
 end
 
 # if __FILE__ == $0

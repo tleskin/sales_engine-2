@@ -22,6 +22,6 @@ class Transaction
   end
 
   def invoice
-    @repository.find_by_first_name(first_name)
+    @repository.find_invoice_by_invoice_id(invoice_id)
   end
 end
