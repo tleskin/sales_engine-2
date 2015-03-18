@@ -38,6 +38,10 @@ class TransactionRepository
     @transactions.detect {|transaction|transaction.invoice_id == invoice_id}
   end
 
+  def find_all_by_invoice_id(invoice_id)
+    @transactions.select {|transaction|transaction.invoice_id == invoice_id}
+  end
+
   def find_by_credit_card_number(credit_card_number)
     @transactions.detect {|credit_card|credit_card.credit_card_number == credit_card_number}
   end

@@ -1,5 +1,6 @@
 require_relative 'test_helper'
 require './lib/invoice'
+require './lib/sales_engine'
 
 class InvoiceTest < Minitest::Test
 
@@ -17,7 +18,7 @@ class InvoiceTest < Minitest::Test
   end
 
   def setup
-    @invoice = Invoice.new(sample_data, self)
+    @invoice = Invoice.new(sample_data, sales_engine = nil)
   end
 
   def test_it_exists
@@ -46,6 +47,30 @@ class InvoiceTest < Minitest::Test
 
   def test_it_has_an_updated_at_time
     assert_equal "2014-06-30 14:15:05 UTC", invoice.updated_at
+  end
+
+  def test_it_returns_a_collection_of_transactions
+    engine = SalesEngine.new("./data")
+    invoice = Invoice.new(sample_data, engine)
+    assert_equal Transaction, invoice.transactions[0].class
+  end
+
+  def test_it_returns_a_collection_of_invoice_items
+    engine = SalesEngine.new("./data")
+    invoice = Invoice.new(sample_data, engine)
+    assert_equal InvoiceItem, invoice.invoice_items[0].class
+  end
+
+  def test_it_returns_a_collection_of_items_by_invoice_item_objects
+    engine = SalesEngine.new("./data")
+    invoice = Invoice.new(sample_data, engine)
+    assert_equal Item, invoice.items[0].class
+  end
+
+  def test_it_returns_an_instance_of_customer_associated_with_this_object
+    engine = SalesEngine.new("./data")
+    invoice = Invoice.new(sample_data, engine)
+    assert_equal Customer, invoice.customer.class
   end
 
 end

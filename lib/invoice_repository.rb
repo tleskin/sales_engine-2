@@ -59,7 +59,7 @@ class InvoiceRepository
   end
 
   def find_all_by_merchant_id(merchant_id)
-    @invoices.select {|invoice| invoice.merchant_id == merchant_id}
+    @invoices.find_all {|invoice| invoice.merchant_id == merchant_id}
   end
 
   def find_all_by_status(status)
@@ -72,6 +72,14 @@ class InvoiceRepository
 
   def find_all_by_updated_at(updated_at)
     @invoices.select {|invoice| invoice.updated_at == updated_at}
+  end
+
+  def find_all_transactions_by_invoice_id(id)
+    @engine.find_all_transactions_by_invoice_id(id)
+  end
+
+  def find_all_customers_by_customer_id(id)
+    @engine.find_all_customers_by_customer_id(id)
   end
 
 end

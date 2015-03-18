@@ -26,31 +26,55 @@ class SalesEngine
   end
 
   def merchant_repository
-    @merchant_repository = MerchantRepository.load(self, "#{file_path}/merchants.csv")
+    merchant_repository = MerchantRepository.load(self, "#{file_path}/merchants.csv")
   end
 
   def invoice_repository
-    @invoice_repository = InvoiceRepository.load(self, "#{file_path}/invoices.csv")
+    invoice_repository = InvoiceRepository.load(self, "#{file_path}/invoices.csv")
   end
 
   def item_repository
-    @item_repository = ItemRepository.load(self, "#{file_path}/items.csv")
+    item_repository = ItemRepository.load(self, "#{file_path}/items.csv")
   end
 
   def customer_repository
-    @customer_repository = CustomerRepository.load(self, "#{file_path}/customers.csv")
+    customer_repository = CustomerRepository.load(self, "#{file_path}/customers.csv")
   end
 
   def transaction_repository
-    @transaction_repository = TransactionRepository.load(self, "#{file_path}/transactions.csv")
+    transaction_repository = TransactionRepository.load(self, "#{file_path}/transactions.csv")
   end
 
   def invoice_item_repository
     invoice_item_repository = InvoiceItemRepository.load(self, "#{file_path}/invoice_items.csv")
   end
 
-  def find_all_items_by_merchant_id(id)
-    item_repository.find_all_by_merchant_id(id)
+  def find_all_items_by_merchant_id(merchant_id)
+    item_repository.find_all_by_merchant_id(merchant_id)
+  end
+
+  def find_all_invoices_by_merchant_id(merchant_id)
+    invoice_repository.find_all_by_merchant_id(merchant_id)
+  end
+
+  def find_all_transactions_by_invoice_id(invoice_id)
+    transaction_repository.find_all_by_invoice_id(invoice_id)
+  end
+
+  def find_all_invoice_items_by_invoice_id(id)
+    invoice_item_repository.find_all_by_invoice_id(id)
+  end
+
+  def find_all_customers_by_customer_id(id)
+    customer_repository.find_by_id(id)
+  end
+
+  def find_invoice_item_by_item_id(id)
+    invoice_item_repository.find_all_by_item_id(id)
+  end
+
+  def find_item_by_merchant_id(id)
+    merchant_repository.find_by_id(id)
   end
 
   def find_all_invoices_by_customer_id(id)

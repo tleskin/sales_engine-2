@@ -1,5 +1,6 @@
 require_relative 'test_helper'
 require './lib/item.rb'
+require './lib/sales_engine'
 
 class ItemTest < Minitest::Test
 
@@ -50,4 +51,23 @@ class ItemTest < Minitest::Test
   def test_it_has_an_updated_date
     assert_equal "2012-03-27 14:54:59 UTC", @item.updated_at
   end
+
+  # def test_it_returns_a_collection_of_invoice_items
+  #   engine = SalesEngine.new("./data")
+  #   item = Item.new(sample_data, engine)
+  #   assert_equal InvoiceItem, item.invoice_items[0].class
+  # end
+
+
+  # def test_it_returns_a_collection_of_items_by_invoice_item_objects
+  #   engine = SalesEngine.new("./data")
+  #   invoice = Invoice.new(sample_data, engine)
+  #   assert_equal Item, invoice.items[0].class
+  # end
+  #
+  # def test_it_returns_an_instance_of_customer_associated_with_this_object
+  #   engine = SalesEngine.new("./data")
+  #   invoice = Invoice.new(sample_data, engine)
+  #   assert_equal Customer, invoice.customer.class
+  # end
 end
