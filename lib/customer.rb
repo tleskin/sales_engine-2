@@ -1,3 +1,5 @@
+require 'pry'
+
 class Customer
 
   attr_reader :id, :first_name, :last_name,
@@ -16,4 +18,23 @@ class Customer
     @repository.find_all_invoices_by_customer_id(id)
   end
 
+  def transactions
+    invoices.map {|invoice| invoice.transactions}.flatten
+  end
+
+  # def successful_transactions
+  #   transactions.select do |transaction|
+  #     transaction.result == "success"
+  #   end
+  # end
+
+  def favorite_merchant
+
+    successful_invoices = invoices.select {|invoice| invoice.successful?}
+
+    successful_merchants = successful_invoices.map {|invoice| invoice.merchant_id}
+
+    repository.find_merchant(successful_merchants[0])
+
+  end
 end

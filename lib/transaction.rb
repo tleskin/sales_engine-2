@@ -24,4 +24,12 @@ class Transaction
   def invoice
     @repository.find_invoice_by_invoice_id(invoice_id)
   end
+
+  def pending?
+    result == "failed"
+  end
+
+  def successful?
+    result == "success"
+  end
 end

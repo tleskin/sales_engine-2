@@ -20,5 +20,26 @@ class Merchant
     repository.find_all_invoices_by_merchant_id(id)
   end
 
+  def transactions
+    invoices.map {|invoice| invoice.transactions}.flatten
+  end
+
+  def pending_transactions
+    invoices.select {|invoice| invoice.pending?}
+  end
+
+  def customers_with_pending_invoices
+    pending_transactions.map {|invoice| invoice.customer}
+  end
+
+
+  ##revenue returns the total revenue for that merchant across all transactions
+  # def revenue
+  #   repository.
+  #
+  #   #get access to merchants items
+  #   #get access to merchants quantity sold
+  #   #calculation = items(unit price) * quanity(Invoice_item)
+  # end
 
 end
