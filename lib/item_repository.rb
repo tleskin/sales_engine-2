@@ -85,10 +85,8 @@ class ItemRepository
   end
 
   def find_invoice_item(id)
-    @engine.find_invoice_item_by_item_id(id)
+    items.find_invoice_item_by_item_id(id)
   end
 
-  def find_merchant(id)
-    @engine.find_item_by_merchant_id(id)
-  end
+
 end

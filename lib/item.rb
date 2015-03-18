@@ -2,7 +2,7 @@ require 'bigdecimal'
 class Item
 
   attr_accessor :id, :name, :merchant_id, :updated_at,
-                :unit_price, :description, :created_at
+                :unit_price, :description, :created_at,
                 :repository
 
   def initialize(data, repository)

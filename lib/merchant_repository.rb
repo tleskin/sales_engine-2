@@ -73,4 +73,8 @@ class MerchantRepository
     @engine.find_all_invoices_by_merchant_id(id)
   end
 
+  def find_by_merchant_id(id)
+    @merchants.detect {|merchant| merchant.id == id}
+  end
+
 end
