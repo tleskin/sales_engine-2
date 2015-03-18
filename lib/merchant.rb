@@ -37,20 +37,8 @@ class Merchant
     successful_invoices = invoices.select {|invoice| invoice.successful?}
     grouped_successful = successful_invoices.group_by {|invoice| invoice.customer_id}
     find_with_most_invoices = grouped_successful.max_by {|customer| customer[1].count}
-    favorite_customer = sort_by_max_number_invoices[-1][0].customer
+    favorite_customer = find_with_most_invoices[-1][0].customer
   end
-
-
-  def favorite_merchant
-
-    successful_invoices = invoices.select {|invoice| invoice.successful?}
-
-    successful_merchants = successful_invoices.map {|invoice| invoice.merchant_id}
-
-    repository.find_merchant(successful_merchants[0])
-
-  end
-
 
   ##revenue returns the total revenue for that merchant across all transactions
   # def revenue
