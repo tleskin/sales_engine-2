@@ -65,5 +65,4 @@ class TransactionRepository
   def find_all_by_result(result)
     @transactions.select {|transaction|transaction.result == result}
   end
-
 end

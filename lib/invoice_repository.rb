@@ -82,4 +82,7 @@ class InvoiceRepository
     @engine.find_all_customers_by_customer_id(id)
   end
 
+  def find_by_invoice_id(id)
+    @invoices.detect{|invoice|invoice.id == id}
+  end
 end
