@@ -1,4 +1,5 @@
 require 'csv'
+require 'pry'
 
 class Merchant
   attr_reader :id, :name, :created_at, :updated_at,
@@ -30,6 +31,24 @@ class Merchant
 
   def customers_with_pending_invoices
     pending_transactions.map {|invoice| invoice.customer}
+  end
+
+  def favorite_customer
+    successful_invoices = invoices.select {|invoice| invoice.successful?}
+    grouped_successful = successful_invoices.group_by {|invoice| invoice.customer_id}
+    find_with_most_invoices = grouped_successful.max_by {|customer| customer[1].count}
+    favorite_customer = sort_by_max_number_invoices[-1][0].customer
+  end
+
+
+  def favorite_merchant
+
+    successful_invoices = invoices.select {|invoice| invoice.successful?}
+
+    successful_merchants = successful_invoices.map {|invoice| invoice.merchant_id}
+
+    repository.find_merchant(successful_merchants[0])
+
   end
 
 
