@@ -53,8 +53,27 @@ class SalesEngine
     item_repository.find_all_by_merchant_id(id)
   end
 
-end
+  def find_all_invoices_by_customer_id(id)
+    invoice_repository.find_all_by_customer_id(id)
+  end
 
+  def find_by_item_id(item_id)
+    item_repository.find_by_item_id(item_id)
+  end
+
+  def find_item(id)
+    item_repository.find_by_id(id)
+  end
+
+  def find_invoice(id)
+    invoice_item_repository.find_by_id(id)
+  end
+
+  def invoice
+    invoice_repository.find_by_id(invoice_id)
+  end
+
+end
 
 # if __FILE__ == $0
   # engine = SalesEngine.new("./data")
