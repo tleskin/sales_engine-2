@@ -60,4 +60,17 @@ class InvoiceTest < Minitest::Test
     invoice = Invoice.new(sample_data, engine)
     assert_equal InvoiceItem, invoice.invoice_items[0].class
   end
+
+  def test_it_returns_a_collection_of_items_by_invoice_item_objects
+    engine = SalesEngine.new("./data")
+    invoice = Invoice.new(sample_data, engine)
+    assert_equal Item, invoice.items[0].class
+  end
+
+  def test_it_returns_an_instance_of_customer_associated_with_this_object
+    engine = SalesEngine.new("./data")
+    invoice = Invoice.new(sample_data, engine)
+    assert_equal Customer, invoice.customer.class
+  end
+
 end

@@ -21,4 +21,12 @@ class Invoice
   def invoice_items
     repository.find_all_invoice_items_by_invoice_id(id)
   end
+
+  def items
+    invoice_items.map { |invoice_item| invoice_item.item }
+  end
+
+  def customer
+    repository.find_all_customers_by_customer_id(customer_id)
+  end
 end

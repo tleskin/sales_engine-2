@@ -64,4 +64,9 @@ class InvoiceItemRepository
   def find_all_by_updated_at(updated_at)
     @invoice_items.select {|item|item.updated_at == updated_at}
   end
+
+  def find_all_by_item_id(id)
+    invoice_items.find_all { |invoice_item| invoice_item.item_id == id }
+  end
+
 end
