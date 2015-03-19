@@ -39,11 +39,11 @@ class Invoice
     repository.find_merchant(merchant_id)
   end
 
-  # def pending?
-  #   transactions.all? {|transaction| transaction.pending?}
-  # end
-  #
-  # def successful?
-  #   transactions.all? {|transaction| transaction.successful?}
-  # end
+  def pending?
+    transactions.all? {|transaction| transaction.pending?}
+  end
+
+  def successful?
+    transactions.all? {|transaction| transaction.successful?}
+  end
 end
