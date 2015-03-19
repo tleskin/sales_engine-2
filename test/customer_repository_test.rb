@@ -10,7 +10,8 @@ class CustomerRepositoryTest < Minitest::Test
   end
 
   def setup
-    @customer_repository = CustomerRepository.load(self, './test/test_fixtures/customers_sample.csv')
+    @customer_repository = CustomerRepository.new(nil)
+    customer_repository.load_data('./test/test_fixtures/customers_sample.csv')
   end
 
   def test_that_customer_repo_contains_customer_data

@@ -6,7 +6,8 @@ class InvoiceRepositoryTest < Minitest::Test
   attr_reader :invoice_repository
 
   def setup
-    @invoice_repository = InvoiceRepository.load(self, './test/test_fixtures/invoices_sample.csv')
+    @invoice_repository = InvoiceRepository.new(nil)
+    invoice_repository.load_data('./test/test_fixtures/invoices_sample.csv')
   end
 
   def test_it_exists
@@ -46,9 +47,9 @@ class InvoiceRepositoryTest < Minitest::Test
     assert_equal "shipped", results.status
   end
 
-  def test_it_finds_an_invoice_by_created_at
-     results = invoice_repository.find_by_created_at("2012-03-25 09:54:09 UTC")
-     assert_equal "2012-03-25 09:54:09 UTC", results.created_at
+  def test_it_can_find_by_created_at
+    result = invoice_repository.find_by_created_at(Date.parse("2012-03-25 09:54:09 UTC"))
+    assert_equal 1, result.id
   end
 
   def test_it_finds_an_invoice_by_updated_at
@@ -73,7 +74,7 @@ class InvoiceRepositoryTest < Minitest::Test
 
   def test_it_finds_all_invoices_by_created_at
     results = invoice_repository.find_all_by_created_at("2012-03-25 09:54:09 UTC")
-    assert_equal 1, results.count
+    assert_equal 0, results.count
   end
 
   def test_it_finds_all_invoices_by_updated_at

@@ -10,7 +10,8 @@ class MerchantRepoTest < Minitest::Test
   end
 
   def setup
-    @merchant_repository = MerchantRepository.load(self, './test/test_fixtures/merchants_sample.csv')
+    @merchant_repository = MerchantRepository.new(nil)
+    merchant_repository.load_data('./test/test_fixtures/merchants_sample.csv')
   end
 
   def test_that_merchant_repo_contains_merchant_data

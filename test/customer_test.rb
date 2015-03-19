@@ -1,7 +1,9 @@
 require_relative 'test_helper'
-require './lib/customer.rb'
+require_relative '../lib/customer'
 
 class CustomerTest < Minitest::Test
+
+   attr_reader :customer
 
    def sample_data
      {
@@ -14,7 +16,7 @@ class CustomerTest < Minitest::Test
    end
 
   def setup
-    @customer = Customer.new(sample_data, sales_engine=nil)
+    @customer = Customer.new(sample_data, nil)
   end
 
   def test_it_exists
@@ -22,22 +24,22 @@ class CustomerTest < Minitest::Test
   end
 
   def test_it_has_an_id
-    assert_equal 1, @customer.id
+    assert_equal 1, customer.id
   end
 
   def test_it_has_a_first_name
-    assert_equal "Joey", @customer.first_name
+    assert_equal "Joey", customer.first_name
   end
 
   def test_it_has_a_last_name
-    assert_equal "Ondricka", @customer.last_name
+    assert_equal "Ondricka", customer.last_name
   end
 
   def test_it_has_a_created_date
-    assert_equal "2012-03-27 14:54:09 UTC", @customer.created_at
+    assert_equal "2012-03-27 14:54:09 UTC", customer.created_at
   end
 
   def test_it_has_an_updated_date
-    assert_equal "2012-03-27 14:55:09 UTC", @customer.updated_at
+    assert_equal "2012-03-27 14:55:09 UTC", customer.updated_at
   end
 end
