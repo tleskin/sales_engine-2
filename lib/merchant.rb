@@ -1,4 +1,5 @@
 require 'bigdecimal'
+require 'bigdecimal/util'
 require 'date'
 
 class Merchant
@@ -9,11 +10,11 @@ class Merchant
               :repository
 
 
-  def initialize(line, repository)
-    @id = line[:id].to_i
-    @name = line[:name]
-    @created_at = line[:created_at]
-    @updated_at = line[:updated_at]
+  def initialize(row, repository)
+    @id = row[:id].to_i
+    @name = row[:name]
+    @created_at = row[:created_at]
+    @updated_at = row[:updated_at]
     @repository = repository
   end
 

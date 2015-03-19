@@ -13,8 +13,8 @@ class TransactionRepository
 
   def load_data(path)
     file = load_file(path)
-    @transactions = file.map do |line|
-      Transaction.new(line, self)
+    @transactions = file.map do |row|
+      Transaction.new(row, self)
     end
     file.close
   end
