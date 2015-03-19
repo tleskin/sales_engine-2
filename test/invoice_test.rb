@@ -18,7 +18,7 @@ class InvoiceTest < Minitest::Test
   end
 
   def setup
-    @invoice = Invoice.new(sample_data, sales_engine = nil)
+    @invoice = Invoice.new(sample_data, nil)
   end
 
   def test_it_exists
@@ -42,35 +42,32 @@ class InvoiceTest < Minitest::Test
   end
 
   def test_it_has_a_created_at_time
-    assert_equal "2014-06-14 12:12:12 UTC", invoice.created_at
+    assert_equal Date.parse("2014-06-14 12:12:12 UTC"), invoice.created_at
   end
 
   def test_it_has_an_updated_at_time
     assert_equal "2014-06-30 14:15:05 UTC", invoice.updated_at
   end
 
-  def test_it_returns_a_collection_of_transactions
-    engine = SalesEngine.new("./data")
-    invoice = Invoice.new(sample_data, engine)
-    assert_equal Transaction, invoice.transactions[0].class
+  def test_it_can_talk_to_the_parent_with_invoice_items
+    engine = Minitest::Mock.new
+    invoice_repository = InvoiceRepository.new(engine)
+    engine.expect(:find_transactions_by_invoice_id, "sample", [1])
+    assert_equal "sample", invoice_repository.find_transactions(1)
   end
 
-  def test_it_returns_a_collection_of_invoice_items
-    engine = SalesEngine.new("./data")
-    invoice = Invoice.new(sample_data, engine)
-    assert_equal InvoiceItem, invoice.invoice_items[0].class
+  def test_it_can_talk_to_the_parent_with_customer
+    engine = Minitest::Mock.new
+    invoice_repository = InvoiceRepository.new(engine)
+    engine.expect(:find_invoice_items_by_invoice_id, "sample", [1])
+    assert_equal "sample", invoice_repository.find_invoice_items(1)
   end
 
-  def test_it_returns_a_collection_of_items_by_invoice_item_objects
-    engine = SalesEngine.new("./data")
-    invoice = Invoice.new(sample_data, engine)
-    assert_equal Item, invoice.items[0].class
-  end
-
-  def test_it_returns_an_instance_of_customer_associated_with_this_object
-    engine = SalesEngine.new("./data")
-    invoice = Invoice.new(sample_data, engine)
-    assert_equal Customer, invoice.customer.class
+  def test_it_can_talk_to_the_parent_with_merchant
+    engine = Minitest::Mock.new
+    invoice_repository = InvoiceRepository.new(engine)
+    engine.expect(:find_merchant_by_id, "sample", [1])
+    assert_equal "sample", invoice_repository.find_merchant(1)
   end
 
 end

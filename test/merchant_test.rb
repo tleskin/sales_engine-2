@@ -4,9 +4,7 @@ require './lib/merchant'
 
 class MerchantTest < Minitest::Test
 
-  def test_it_exists
-    assert Merchant
-  end
+  attr_reader :merchant
 
   def sample_data
     {
@@ -18,34 +16,48 @@ class MerchantTest < Minitest::Test
   end
 
   def setup
-    @merchant = Merchant.new(sample_data, sales_engine=nil)
+    @merchant = Merchant.new(sample_data, nil)
+  end
+
+  def test_it_exists
+    assert Merchant
   end
 
   def test_it_has_an_id
-    assert_equal 1, @merchant.id
+    assert_equal 1, merchant.id
   end
 
   def test_it_has_a_name
-    assert_equal "Schroeder-Jerde", @merchant.name
+    assert_equal "Schroeder-Jerde", merchant.name
   end
 
   def test_it_has_a_created_date
-    assert_equal "2012-03-27 14:53:59 UTC", @merchant.created_at
+    assert_equal "2012-03-27 14:53:59 UTC", merchant.created_at
   end
 
   def test_it_has_an_updated_date
-    assert_equal "2012-03-27 14:53:59 UTC", @merchant.updated_at
+    assert_equal "2012-03-27 14:53:59 UTC", merchant.updated_at
   end
 
-  def test_it_returns_items
-    engine = SalesEngine.new("./data")
+  def test_it_can_talk_to_the_repository_with_items
+    engine = Minitest::Mock.new
     merchant = Merchant.new(sample_data, engine)
-    assert_equal Item, merchant.items[0].class
+    engine.expect(:find_items, [1, 2], [1])
+    assert_equal [1, 2], merchant.items
   end
 
-  def test_it_returns_invoices
-    engine = SalesEngine.new("./data")
+  def test_it_can_talk_to_the_repository_with_invoices
+    engine = Minitest::Mock.new
     merchant = Merchant.new(sample_data, engine)
-    assert_equal Invoice, merchant.invoices[0].class
+    engine.expect(:find_invoices, [1, 2], [1])
+    assert_equal [1, 2], merchant.invoices
   end
+
+  # def test_it_can_find_the_favorite_customer
+  #   sales_engine = SalesEngine.new("./data")
+  #   sales_engine.startup
+  #   merchant = sales_engine.merchant_repository.merchants[50]
+  #   assert_equal "Kuhn", merchant.favorite_customer.last_name
+  # end
+
 end

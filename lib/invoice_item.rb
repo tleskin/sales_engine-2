@@ -15,7 +15,7 @@ class InvoiceItem
     @item_id = line[:item_id].to_i
     @invoice_id = line[:invoice_id].to_i
     @quantity = line[:quantity].to_i
-    @unit_price = line[:unit_price].to_d/100
+    @unit_price = BigDecimal.new(line[:unit_price])/100
     @created_at = line[:created_at]
     @updated_at = line[:updated_at]
     @repository = repository

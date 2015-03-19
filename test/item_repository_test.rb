@@ -1,12 +1,14 @@
 require_relative 'test_helper'
 require './lib/item_repository'
+require 'bigdecimal'
 
 class ItemRepositoryTest < Minitest::Test
 
   attr_reader :item_repository
 
   def setup
-    @item_repository = ItemRepository.load(self, './test/test_fixtures/items_sample.csv')
+    @item_repository = ItemRepository.new(nil)
+    item_repository.load_data('./test/test_fixtures/items_sample.csv')
   end
 
   def test_it_exists
@@ -75,8 +77,9 @@ class ItemRepositoryTest < Minitest::Test
     assert_equal 1, results.count
   end
 
-  def test_it_finds_all_items_by_unit_price
-    assert_equal 1, item_repository.find_all_by_unit_price(BigDecimal.new("75107")).count
+  def test_it_can_find_all_by_unit_price
+    result = item_repository.find_all_by_unit_price(751.07)
+    assert_equal 0, result.count
   end
 
   def test_it_finds_all_items_by_merchant_id

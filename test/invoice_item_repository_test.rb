@@ -5,12 +5,13 @@ class InvoiceItemRepositoryTest < Minitest::Test
 
   attr_reader :invoice_item_repository
 
-  def test_it_exists
-    assert InvoiceItemRepository
+  def setup
+    @invoice_item_repository = InvoiceItemRepository.new(nil)
+    invoice_item_repository.load_data('./test/test_fixtures/invoice_items_sample.csv')
   end
 
-  def setup
-    @invoice_item_repository = InvoiceItemRepository.load(self, './test/test_fixtures/invoice_items_sample.csv')
+  def test_it_exists
+    assert InvoiceItemRepository
   end
 
   def test_that_invoice_time_repository_contains_data
@@ -51,7 +52,7 @@ class InvoiceItemRepositoryTest < Minitest::Test
     results = @invoice_item_repository.find_by_created_at("2012-03-27 14:54:09 UTC")
     assert_equal "2012-03-27 14:54:09 UTC", results.created_at
   end
-
+  
   def test_it_finds_an_invoice_item_by_updated_at
 
     results = invoice_item_repository.find_by_updated_at("2012-03-27 14:54:09 UTC")

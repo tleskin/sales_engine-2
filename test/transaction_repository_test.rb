@@ -10,7 +10,8 @@ class TransactionRepositoryTest < Minitest::Test
   end
 
   def setup
-    @transaction_repository = TransactionRepository.load(self, './test/test_fixtures/transactions_sample.csv')
+    @transaction_repository = TransactionRepository.new(nil)
+    transaction_repository.load_data('./test/test_fixtures/transactions_sample.csv')
   end
 
   def test_that_transaction_repo_contains_data

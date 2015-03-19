@@ -3,13 +3,11 @@ require './lib/sales_engine.rb'
 
 class SalesEngineTest < Minitest::Test
 
-  attr_reader :engine, :invoice_repository,
-              :item_repository, :customer_repository,
-              :merchant_repository, :invoice_items
+  attr_reader :engine
 
   def setup
-    @engine = SalesEngine.new
-    engine.startup
+    @engine = SalesEngine.new("./data")
+      engine.startup
   end
 
   def test_it_exists

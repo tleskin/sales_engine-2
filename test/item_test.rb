@@ -4,6 +4,8 @@ require './lib/sales_engine'
 
 class ItemTest < Minitest::Test
 
+  attr_reader :item
+
   def sample_data
     {
       id: "1",
@@ -17,7 +19,7 @@ class ItemTest < Minitest::Test
   end
 
   def setup
-    @item = Item.new(sample_data, sales_engine=nil)
+    @item = Item.new(sample_data, nil)
   end
 
   def test_it_exists
@@ -52,22 +54,24 @@ class ItemTest < Minitest::Test
     assert_equal "2012-03-27 14:54:59 UTC", @item.updated_at
   end
 
-  # def test_it_returns_a_collection_of_invoice_items
-  #   engine = SalesEngine.new("./data")
-  #   item = Item.new(sample_data, engine)
-  #   assert_equal InvoiceItem, item.invoice_items[0].class
-  # end
+  def test_it_can_talk_to_the_repository_with_invoices
+    engine = Minitest::Mock.new
+    item = Item.new(sample_data, engine)
+    engine.expect(:find_invoice_items, [1, 2], [1])
+    assert_equal [1, 2], item.invoice_items
+  end
 
+  def test_it_can_talk_to_the_repository_with_merchant
+    engine = Minitest::Mock.new
+    item = Item.new(sample_data, engine)
+    engine.expect(:find_merchant, "sample", [2])
+    assert_equal "sample", item.merchant
+  end
 
-  # def test_it_returns_a_collection_of_items_by_invoice_item_objects
-  #   engine = SalesEngine.new("./data")
-  #   invoice = Invoice.new(sample_data, engine)
-  #   assert_equal Item, invoice.items[0].class
-  # end
-  #
-  # def test_it_returns_an_instance_of_customer_associated_with_this_object
-  #   engine = SalesEngine.new("./data")
-  #   invoice = Invoice.new(sample_data, engine)
-  #   assert_equal Customer, invoice.customer.class
-  # end
+  def test_it_can_find_its_best_day
+    sales_engine = SalesEngine.new("./data")
+    sales_engine.startup
+    item = sales_engine.item_repository.items[2]
+    assert_equal "2012-03-10", item.best_day.to_s
+  end
 end
