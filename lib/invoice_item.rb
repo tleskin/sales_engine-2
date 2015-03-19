@@ -1,4 +1,5 @@
 require 'bigdecimal'
+require 'bigdecimal/util'
 
 class InvoiceItem
   attr_reader :id,
@@ -19,6 +20,7 @@ class InvoiceItem
     @created_at = line[:created_at]
     @updated_at = line[:updated_at]
     @repository = repository
+
   end
 
   def item
@@ -27,5 +29,9 @@ class InvoiceItem
 
   def invoice
     repository.find_invoice(invoice_id)
+  end
+
+  def revenue
+    BigDecimal.new(line[:unit_price])/100 * @quantity.to_i
   end
 end

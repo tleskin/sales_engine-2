@@ -1,5 +1,4 @@
 require 'bigdecimal'
-require 'bigdecimal/util'
 require 'date'
 
 class Merchant
@@ -8,6 +7,7 @@ class Merchant
               :created_at,
               :updated_at,
               :repository
+
 
   def initialize(line, repository)
     @id = line[:id].to_i
@@ -38,7 +38,6 @@ class Merchant
   end
 
   def favorite_customer
-    successful_invoices = invoices.select {|invoice| invoice.successful?}
     grouped_successful = successful_invoices.group_by {|invoice| invoice.customer_id}
     find_with_most_invoices = grouped_successful.max_by {|customer| customer[1].count}
     favorite_customer = find_with_most_invoices[-1][0].customer
@@ -52,4 +51,29 @@ class Merchant
   #   #get access to merchants quantity sold
   #   #calculation = items(unit price) * quanity(Invoice_item)
   # end
+  #
+  # def revenue(date = nil)
+  #
+  # end
+
+  def revenue(date=nil)
+   if date.nil?
+     successful_invoices.reduce(0) {| sum, invoice |
+       sum + (invoice.revenue)
+     }
+   else
+     successful_invoices.select { |invoice| invoice.created_at == date }
+      .reduce(0) { |sum, invoice|
+        sum + invoice.revenue
+      }
+   end
+ end
+
+
+  private
+
+  def successful_invoices
+    successful_invoices = invoices.select {|invoice| invoice.successful?}
+  end
+
 end
