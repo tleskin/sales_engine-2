@@ -1,24 +1,28 @@
-require 'csv'
-require 'pry'
+require 'bigdecimal'
+require 'bigdecimal/util'
+require 'date'
 
 class Merchant
-  attr_reader :id, :name, :created_at, :updated_at,
+  attr_reader :id,
+              :name,
+              :created_at,
+              :updated_at,
               :repository
 
-  def initialize(data, repository)
-    @id = data[:id].to_i
-    @name = data[:name]
-    @created_at = data[:created_at]
-    @updated_at = data[:updated_at]
+  def initialize(line, repository)
+    @id = line[:id].to_i
+    @name = line[:name]
+    @created_at = line[:created_at]
+    @updated_at = line[:updated_at]
     @repository = repository
   end
 
   def items
-    repository.find_all_items_by_merchant_id(id)
+    repository.find_items(id)
   end
 
   def invoices
-    repository.find_all_invoices_by_merchant_id(id)
+    repository.find_invoices(id)
   end
 
   def transactions
@@ -33,11 +37,32 @@ class Merchant
     pending_transactions.map {|invoice| invoice.customer}
   end
 
+  # def customers_with_pending_invoices
+  #   unsuccessful_invoices
+  #
+  #   unsuccessful_invoices.map do |invoice|
+  #     invoice.customer
+  #   end
+  # end
+
+  # def favorite_customer
+  #   successful_invoices = invoices.select {|invoice| invoice.successful?}
+  #   grouped_successful = successful_invoices.group_by {|invoice| invoice.customer_id}
+  #   find_with_most_invoices = grouped_successful.max_by {|customer| customer[1].count}
+  #   favorite_customer = find_with_most_invoices[-1][0].customer
+  # end
+
   def favorite_customer
-    successful_invoices = invoices.select {|invoice| invoice.successful?}
-    grouped_successful = successful_invoices.group_by {|invoice| invoice.customer_id}
-    find_with_most_invoices = grouped_successful.max_by {|customer| customer[1].count}
-    favorite_customer = find_with_most_invoices[-1][0].customer
+    successful_transactions = successful_transactions(merchant_transactions)
+
+    successful_invoices = successful_invoices(successful_transactions)
+
+    merchant_customers = successful_invoices.map do |invoice|
+      invoice.customer
+    end
+    merchant_customers.max_by do |customer|
+      merchant_customers.count(customer)
+    end
   end
 
   ##revenue returns the total revenue for that merchant across all transactions
@@ -48,5 +73,4 @@ class Merchant
   #   #get access to merchants quantity sold
   #   #calculation = items(unit price) * quanity(Invoice_item)
   # end
-
 end

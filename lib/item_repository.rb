@@ -1,27 +1,26 @@
-require 'csv'
+require_relative 'load_file'
 require_relative 'item'
-require 'bigdecimal'
-require 'bigdecimal/util'
 
 class ItemRepository
-
   attr_reader :items, :sales_engine
 
-  def initialize(items, sales_engine)
-    @items = items
+  include LoadFile
+
+  def initialize(sales_engine)
+    @items = []
     @sales_engine = sales_engine
   end
 
-  def inspect
-    "#<#{self.class} #{customer.size} rows>"
+  def load_data(path)
+    file = load_file(path)
+    @items = file.map do |line|
+      Item.new(line, self)
+    end
+    file.close
   end
 
-  def self.load(sales_engine, file)
-    data = CSV.open(file, headers: true, header_converters: :symbol)
-    rows = data.map do |row|
-      Item.new(row, sales_engine)
-    end
-    new(rows, sales_engine)
+  def inspect
+    "#<#{self.class} #{items.size} rows>"
   end
 
   def all
@@ -31,6 +30,8 @@ class ItemRepository
   def random
     items.sample
   end
+
+  ## Find by methods
 
   def find_by_id(id)
     items.detect {|item| item.id == id}
@@ -60,6 +61,12 @@ class ItemRepository
     items.detect {|item| item.updated_at == updated_at}
   end
 
+  ## Find all by methods
+
+  def find_all_by_id(id)
+    items.select {|item| item.id == id}
+  end
+
   def find_all_by_name(name)
     items.select {|item| item.name == name}
   end
@@ -84,9 +91,13 @@ class ItemRepository
     items.select {|item| item.updated_at == updated_at}
   end
 
-  def find_invoice_item(id)
-    items.find_invoice_item_by_item_id(id)
+  ## Other methods
+
+  def find_invoice_items(id)
+    sales_engine.find_invoice_items_by_item_id(id)
   end
 
-
+  def find_merchant(id)
+    sales_engine.find_merchant_by_id(id)
+  end
 end

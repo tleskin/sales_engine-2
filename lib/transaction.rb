@@ -1,5 +1,3 @@
-require 'csv'
-
 class Transaction
   attr_accessor :id,
                 :invoice_id,
@@ -10,19 +8,19 @@ class Transaction
                 :updated_at,
                 :repository
 
-  def initialize (data, repository)
-    @id = data[:id].to_i
-    @invoice_id = data[:invoice_id].to_i
-    @credit_card_number = data[:credit_card_number]
-    @credit_card_expiration_date = data[:credit_card_expiration_date]
-    @result = data[:result]
-    @created_at = data[:created_at]
-    @updated_at = data[:updated_at]
+  def initialize (line, repository)
+    @id = line[:id].to_i
+    @invoice_id = line[:invoice_id].to_i
+    @credit_card_number = line[:credit_card_number]
+    @credit_card_expiration_date = line[:credit_card_expiration_date]
+    @result = line[:result]
+    @created_at = line[:created_at]
+    @updated_at = line[:updated_at]
     @repository = repository
   end
 
   def invoice
-    @repository.find_invoice_by_invoice_id(invoice_id)
+    repository.find_invoice(invoice_id)
   end
 
   def pending?

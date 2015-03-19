@@ -1,119 +1,91 @@
-require 'csv'
+require_relative './customer_repository'
 require_relative './merchant_repository'
 require_relative './invoice_repository'
-require_relative './item_repository'
 require_relative './invoice_item_repository'
-require_relative './customer_repository'
+require_relative './item_repository'
 require_relative './transaction_repository'
 
 class SalesEngine
-  attr_reader :merchant_repository, :file_path,
-              :invoice_repository, :item_repository,
-              :invoice_item_repository, :transaction_repository,
-              :customer_repository
+  attr_reader :customer_repository,
+              :invoice_repository,
+              :invoice_item_repository,
+              :item_repository,
+              :merchant_repository,
+              :transaction_repository,
+              :filepath
 
-  def initialize(file_path = "./data")
-    @file_path = file_path
+  def initialize(filepath)
+    @filepath = filepath
   end
 
   def startup
-    merchant_repository
-    invoice_repository
-    item_repository
-    customer_repository
-    transaction_repository
-    invoice_item_repository
+    @customer_repository = CustomerRepository.new(self)
+
+    @customer_repository.load_data("#{@filepath}/customers.csv")
+
+    @merchant_repository = MerchantRepository.new(self)
+
+    @merchant_repository.load_data("#{@filepath}/merchants.csv")
+
+    @transaction_repository = TransactionRepository.new(self)
+
+    @transaction_repository.load_data("#{@filepath}/transactions.csv")
+
+    @item_repository = ItemRepository.new(self)
+
+    @item_repository.load_data("#{@filepath}/items.csv")
+
+    @invoice_repository = InvoiceRepository.new(self)
+
+    @invoice_repository.load_data("#{@filepath}/invoices.csv")
+
+    @invoice_item_repository = InvoiceItemRepository.new(self)
+
+    @invoice_item_repository.load_data("#{@filepath}/invoice_items.csv")
   end
 
-  def merchant_repository
-    merchant_repository = MerchantRepository.load(self, "#{file_path}/merchants.csv")
+  def find_items_by_merchant_id(id)
+    item_repository.find_all_by_merchant_id(id)
   end
 
-  def invoice_repository
-    invoice_repository = InvoiceRepository.load(self, "#{file_path}/invoices.csv")
+  def find_invoices_by_merchant_id(id)
+    invoice_repository.find_all_by_merchant_id(id)
   end
 
-  def item_repository
-    item_repository = ItemRepository.load(self, "#{file_path}/items.csv")
-  end
-
-  def customer_repository
-    customer_repository = CustomerRepository.load(self, "#{file_path}/customers.csv")
-  end
-
-  def transaction_repository
-    transaction_repository = TransactionRepository.load(self, "#{file_path}/transactions.csv")
-  end
-
-  def invoice_item_repository
-    invoice_item_repository = InvoiceItemRepository.load(self, "#{file_path}/invoice_items.csv")
-  end
-
-  def find_all_items_by_merchant_id(merchant_id)
-    item_repository.find_all_by_merchant_id(merchant_id)
-  end
-
-  def find_all_invoices_by_merchant_id(merchant_id)
-    invoice_repository.find_all_by_merchant_id(merchant_id)
-  end
-
-  def find_all_transactions_by_invoice_id(invoice_id)
-    transaction_repository.find_all_by_invoice_id(invoice_id)
-  end
-
-  def find_all_invoice_items_by_invoice_id(id)
-    invoice_item_repository.find_all_by_invoice_id(id)
-  end
-
-  def find_all_customers_by_customer_id(id)
-    customer_repository.find_by_id(id)
-  end
-
-  def find_invoice_item_by_item_id(id)
+  def find_invoice_items_by_item_id(id)
     invoice_item_repository.find_all_by_item_id(id)
   end
 
-  def find_item_by_merchant_id(id)
+  def find_merchant_id(id)
     merchant_repository.find_by_id(id)
   end
 
-  def find_all_invoices_by_customer_id(id)
+  def find_invoice_by_id(id)
+    invoice_repository.find_by_id(id)
+  end
+
+  def find_invoices_by_customer_id(id)
     invoice_repository.find_all_by_customer_id(id)
   end
 
-  def find_by_item_id(item_id)
-    item_repository.find_by_item_id(item_id)
-  end
-
-  def find_item(id)
+  def find_item_by_id(id)
     item_repository.find_by_id(id)
   end
 
-  def find_invoice(id)
-    invoice_item_repository.find_by_id(id)
+  def find_transactions_by_invoice_id(id)
+    transaction_repository.find_all_by_invoice_id(id)
   end
 
-  def invoice
-    invoice_repository.find_by_id(invoice_id)
+  def find_invoice_items_by_invoice_id(id)
+    invoice_item_repository.find_all_by_invoice_id(id)
   end
 
-  def find_invoice_by_invoice_id(id)
-    invoice_repository.find_by_invoice_id(id)
+  def find_customer_by_id(id)
+    customer_repository.find_by_id(id)
   end
 
-  def find_merchant(id)
-    merchant_repository.find_by_merchant_id(id)
-  end
-
-  def find_invoice_item(id)
-    invoice_item_repository.find_all_by_item_id(id)
+  def find_merchant_by_id(id)
+    merchant_repository.find_by_id(id)
   end
 
 end
-
-# if __FILE__ == $0
-  # engine = SalesEngine.new("./data")
-  # engine.startup
-  # merchant = engine.merchant_repository.find_by_name("Kirlin, Jakubowski and Smitham")
-  # puts merchant.items
-# end

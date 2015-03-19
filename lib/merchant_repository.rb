@@ -1,80 +1,81 @@
-require 'csv'
+require_relative 'load_file'
+require 'bigdecimal'
+require 'bigdecimal/util'
 require_relative 'merchant'
 
 class MerchantRepository
   attr_reader :merchants, :sales_engine
-  attr_accessor :id,
-                :name,
-                :created_at,
-                :updated_at
 
-  def initialize(merchants, sales_engine)
-    @merchants = merchants
+  include LoadFile
+
+  def initialize(sales_engine)
+    @merchants = []
     @sales_engine = sales_engine
   end
 
-  def self.load(sales_engine, file)
-    data = CSV.open(file, headers: true, header_converters: :symbol)
-    rows = data.map do |row|
-      Merchant.new(row, sales_engine)
+  def load_data(path)
+    file = load_file(path)
+    @merchants = file.map do |line|
+      Merchant.new(line, self)
     end
-    new(rows, sales_engine)
+    file.close
   end
 
   def inspect
-    "#<#{self.class} #{customer.size} rows>"
+    "#<#{self.class} #{merchants.size} rows>"
   end
 
   def all
-    @merchants
+    merchants
   end
 
   def random
-    @merchants.sample
+    merchants.sample
   end
 
+  ## Find by methods
+
   def find_by_id(id)
-    @merchants.detect {|merchant| merchant.id == id}
+    merchants.detect {|merchant| merchant.id == id}
   end
 
   def find_by_name(name)
-    @merchants.detect {|merchant| merchant.name == name}
+    merchants.detect {|merchant| merchant.name == name}
   end
 
   def find_by_created_at(created_at)
-    @merchants.detect {|merchant| merchant.created_at == created_at}
+    merchants.detect {|merchant| merchant.created_at == created_at}
   end
 
   def find_by_updated_at(updated_at)
-    @merchants.detect {|merchant| merchant.updated_at == updated_at}
+    merchants.detect {|merchant| merchant.updated_at == updated_at}
   end
 
+  ## Find all by methods
+
   def find_all_by_id(id)
-    @merchants.select {|merchant| merchant.id == id}
+    merchants.select {|merchant| merchant.id == id}
   end
 
   def find_all_by_name(name)
-    @merchants.select {|merchant| merchant.name == name}
+    merchants.select {|merchant| merchant.name == name}
   end
 
   def find_all_by_created_at(created_at)
-    @merchants.select {|merchant| merchant.created_at == created_at}
+    merchants.select {|merchant| merchant.created_at == created_at}
   end
 
   def find_all_by_updated_at(updated_at)
-    @merchants.select {|merchant| merchant.updated_at == updated_at}
+    merchants.select {|merchant| merchant.updated_at == updated_at}
   end
 
-  def find_all_items_by_merchant_id(id)
-    @engine.find_all_items_by_merchant_id(id)
+  ## Other methods
+
+  def find_items(id)
+    sales_engine.find_items_by_merchant_id(id)
   end
 
-  def find_all_invoices_by_merchant_id(id)
-    @engine.find_all_invoices_by_merchant_id(id)
+  def find_invoices(id)
+    sales_engine.find_invoices_by_merchant_id(id)
   end
-
-  def find_by_merchant_id(id)
-    @merchants.detect {|merchant| merchant.id == id}
-  end
-
 end

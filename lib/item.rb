@@ -1,30 +1,36 @@
-require 'bigdecimal'
+require 'bigdecimal/util'
 class Item
 
-  attr_accessor :id, :name, :merchant_id, :updated_at,
-                :unit_price, :description, :created_at,
-                :repository
+  attr_reader :id,
+              :name,
+              :merchant_id,
+              :updated_at,
+              :unit_price,
+              :description,
+              :created_at,
+              :repository
 
-  def initialize(data, repository)
-    @id = data[:id].to_i
-    @name = data[:name]
-    @description = data[:description]
-    @unit_price = (data[:unit_price].to_d)/100
-    @merchant_id = data[:merchant_id].to_i
-    @created_at = data[:created_at]
-    @updated_at = data[:updated_at]
+  def initialize(line, repository)
+    @id = line[:id].to_i
+    @name = line[:name]
+    @description = line[:description]
+    @unit_price = BigDecimal.new(line[:unit_price].to_d)/100
+    @merchant_id = line[:merchant_id].to_i
+    @created_at = line[:created_at]
+    @updated_at = line[:updated_at]
     @repository = repository
   end
 
   def invoice_items
-     repository.find_invoice_item(id)
+     repository.find_invoice_items(id)
   end
-
 
   def merchant
     repository.find_merchant(merchant_id)
   end
 
-
-
+  def best_day
+    most_sold = invoice_items.max_by { |invoice_item| invoice_item.quantity }
+    date      = most_sold.invoice.created_at
+  end
 end

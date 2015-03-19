@@ -1,60 +1,87 @@
-require 'csv'
+require_relative 'load_file'
 require_relative 'invoice_item'
 
 class InvoiceItemRepository
   attr_reader :invoice_items, :sales_engine
 
-  def initialize(invoice_items, sales_engine)
-    @invoice_items = invoice_items
+  include LoadFile
+
+  def initialize(sales_engine)
+    @invoice_items = []
     @sales_engine = sales_engine
   end
 
-  def inspect
-    "#<#{self.class} #{customer.size} rows>"
+  def load_data(path)
+    file = load_file(path)
+    @invoice_items = file.map do |line|
+      InvoiceItem.new(line, self)
+    end
+    file.close
   end
 
-  def self.load(sales_engine, file)
-    data = CSV.open(file, headers: true, header_converters: :symbol)
-    rows = data.map do |row|
-      InvoiceItem.new(row, sales_engine)
-    end
-    new(rows, sales_engine)
+  def inspect
+    "#<#{self.class} #{@invoice_items.size} rows>"
   end
 
   def all
-    @invoice_items
+    invoice_items
   end
 
   def random
-    @invoice_items.sample
+    invoice_items.sample
   end
 
+  ## Find by methods
+
   def find_by_id(id)
-    @invoice_items.detect {|item| item.id == id}
+    invoice_items.detect {|item| item.id == id}
   end
 
   def find_by_item_id(item_id)
-    @invoice_items.detect {|item| item.item_id == item_id}
+    invoice_items.detect {|item| item.item_id == item_id}
+  end
+
+  def find_by_invoice_id(invoice_id)
+    invoice_items.detect {|item| item.item_id == item_id}
   end
 
   def find_by_quantity(quantity)
-    @invoice_items.detect {|item| item.quantity == quantity}
+    invoice_items.detect {|item| item.quantity == quantity}
   end
 
-  def find_all_by_quantity(quantity)
-    @invoice_items.select {|item| item.quantity == quantity}
+  def find_by_unit_price(unit_price)
+    invoice_items.detect {|item| item.unit_price == unit_price}
   end
 
-  def find_all_by_invoice_id(invoice_id)
-    @invoice_items.select {|item| item.invoice_id == invoice_id}
-  end
 
   def find_by_created_at(created_at)
-    @invoice_items.detect {|item| item.created_at == created_at}
+    invoice_items.detect {|item| item.created_at == created_at}
   end
 
   def find_by_updated_at(updated_at)
-    @invoice_items.detect {|item|item.updated_at == updated_at}
+    invoice_items.detect {|item| item.updated_at == updated_at}
+  end
+
+  ## Find all by methods
+
+  def find_all_by_id(id)
+    invoice_items.select { |invoice_item| invoice_item.id == id }
+  end
+
+  def find_all_by_item_id(item_id)
+    invoice_items.select { |invoice_item| invoice_item.item_id == item_id }
+  end
+
+  def find_all_by_invoice_id(invoice_id)
+    invoice_items.select {|item| item.invoice_id == invoice_id}
+  end
+
+  def find_all_by_quantity(quantity)
+    invoice_items.select {|item| item.quantity == quantity}
+  end
+
+  def find_all_by_unit_price(unit_price)
+    invoice_items.select {|item| item.unit_price == unit_price}
   end
 
   def find_all_by_created_at(created_at)
@@ -65,8 +92,15 @@ class InvoiceItemRepository
     @invoice_items.select {|item|item.updated_at == updated_at}
   end
 
-  def find_all_by_item_id(id)
-    @invoice_items.find_all { |invoice_item| invoice_item.item_id == id }
+  ## Other methods
+
+  def find_invoice(id)
+    sales_engine.find_invoice_by_id(id)
   end
+
+  def find_item(item_id)
+    sales_engine.find_item_by_id(item_id)
+  end
+
 
 end
