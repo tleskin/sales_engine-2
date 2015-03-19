@@ -53,11 +53,11 @@ class MerchantTest < Minitest::Test
     assert_equal [1, 2], merchant.invoices
   end
 
-  # def test_it_can_find_the_favorite_customer
-  #   sales_engine = SalesEngine.new("./data")
-  #   sales_engine.startup
-  #   merchant = sales_engine.merchant_repository.merchants[50]
-  #   assert_equal "Kuhn", merchant.favorite_customer.last_name
-  # end
+  def test_it_can_find_the_favorite_customer
+    sales_engine = SalesEngine.new("./data")
+    sales_engine.startup
+    merchant = sales_engine.merchant_repository.merchants[50]
+    assert_equal "Kuhn", merchant.favorite_customer.last_name
+  end
 
 end

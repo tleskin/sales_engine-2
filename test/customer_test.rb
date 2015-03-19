@@ -42,4 +42,12 @@ class CustomerTest < Minitest::Test
   def test_it_has_an_updated_date
     assert_equal "2012-03-27 14:55:09 UTC", customer.updated_at
   end
+
+  def test_it_can_get_its_favorite_merchant
+    sales_engine = SalesEngine.new("./data")
+    sales_engine.startup
+    customer = sales_engine.customer_repository.customers[50]
+    assert_equal "Rutherford, Bogan and Leannon", customer.favorite_merchant.name
+  end
+
 end

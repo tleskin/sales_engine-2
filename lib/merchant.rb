@@ -37,33 +37,12 @@ class Merchant
     pending_transactions.map {|invoice| invoice.customer}
   end
 
-  # def customers_with_pending_invoices
-  #   unsuccessful_invoices
-  #
-  #   unsuccessful_invoices.map do |invoice|
-  #     invoice.customer
-  #   end
-  # end
-
   def favorite_customer
     successful_invoices = invoices.select {|invoice| invoice.successful?}
     grouped_successful = successful_invoices.group_by {|invoice| invoice.customer_id}
     find_with_most_invoices = grouped_successful.max_by {|customer| customer[1].count}
     favorite_customer = find_with_most_invoices[-1][0].customer
   end
-
-  # def favorite_customer
-  #   successful_transactions = successful_transactions(merchant_transactions)
-  #
-  #   successful_invoices = successful_invoices(successful_transactions)
-  #
-  #   merchant_customers = successful_invoices.map do |invoice|
-  #     invoice.customer
-  #   end
-  #   merchant_customers.max_by do |customer|
-  #     merchant_customers.count(customer)
-  #   end
-  # end
 
   ##revenue returns the total revenue for that merchant across all transactions
   # def revenue

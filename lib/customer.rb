@@ -26,34 +26,11 @@ class Customer
     invoices.map {|invoice| invoice.transactions}.flatten
   end
 
-  # def successful_transactions
-  #   transactions.select do |transaction|
-  #     transaction.result == "success"
-  #   end
-  # end
-
   def favorite_merchant
-
     successful_invoices = invoices.select {|invoice| invoice.successful?}
-
-    successful_merchants = successful_invoices.map {|invoice| invoice.merchant_id}
-
-    repository.find_merchant(successful_merchants[0])
-
+    successful_merchants = successful_invoices.group_by {|invoice| invoice.merchant_id}
+    find_most_successful = successful_merchants.max_by {|merchant| merchant[1].count}
+    favorite_merchant = find_most_successful[-1][0].merchant
   end
-
-  # private
-  #
-  # def successful_transactions
-  #   transactions.select { |transaction| transaction.successful? }
-  # end
-  #
-  # def successful_invoices(transactions)
-  #   transactions.map { |sv| sv.invoice }
-  # end
-  #
-  # def successful_merchants(invoices)
-  #   invoices.map { |invoice| invoice.merchant }
-  # end
 
 end
