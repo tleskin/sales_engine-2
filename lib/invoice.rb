@@ -17,6 +17,7 @@ class Invoice
     @created_at = Date.parse(line[:created_at])
     @updated_at = line[:updated_at]
     @repository = repository
+    
   end
 
   def transactions
@@ -46,4 +47,10 @@ class Invoice
   def successful?
     transactions.all? {|transaction| transaction.successful?}
   end
+
+  def revenue
+    BigDecimal.new(invoice_items.reduce(0) { |sum, invoice_item|
+      sum + (invoice_item.quantity * invoice_item.unit_price)})
+  end
+
 end

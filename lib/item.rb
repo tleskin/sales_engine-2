@@ -33,4 +33,6 @@ class Item
     most_sold = invoice_items.max_by { |invoice_item| invoice_item.quantity }
     date      = most_sold.invoice.created_at
   end
+
+
 end
