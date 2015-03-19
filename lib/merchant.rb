@@ -60,7 +60,7 @@ class Merchant
   def revenue(date=nil)
    if date.nil?
      successful_invoices.reduce(0) {| sum, invoice |
-       sum + (invoice.revenue)
+       sum + invoice.revenue
      }
    else
      successful_invoices.select { |invoice| invoice.created_at == date }

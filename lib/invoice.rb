@@ -45,12 +45,12 @@ class Invoice
   end
 
   def successful?
-    transactions.all? {|transaction| transaction.successful?}
+    transactions.any? {|transaction| transaction.successful?}
   end
 
   def revenue
-    BigDecimal.new(invoice_items.reduce(0) { |sum, invoice_item|
-      sum + (invoice_item.quantity * invoice_item.unit_price)})
+    invoice_items.reduce(0) { |sum, invoice_item|
+      sum + (invoice_item.quantity * invoice_item.unit_price)}
   end
 
 end
