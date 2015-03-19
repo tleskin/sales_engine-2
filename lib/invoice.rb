@@ -9,15 +9,15 @@ class Invoice
               :updated_at,
               :repository
 
-  def initialize(line, repository)
-    @id = line[:id].to_i
-    @customer_id = line[:customer_id].to_i
-    @merchant_id = line[:merchant_id].to_i
-    @status = line[:status]
-    @created_at = Date.parse(line[:created_at])
-    @updated_at = line[:updated_at]
+  def initialize(row, repository)
+    @id = row[:id].to_i
+    @customer_id = row[:customer_id].to_i
+    @merchant_id = row[:merchant_id].to_i
+    @status = row[:status]
+    @created_at = Date.parse(row[:created_at])
+    @updated_at = row[:updated_at]
     @repository = repository
-    
+
   end
 
   def transactions

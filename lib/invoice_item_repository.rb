@@ -13,8 +13,8 @@ class InvoiceItemRepository
 
   def load_data(path)
     file = load_file(path)
-    @invoice_items = file.map do |line|
-      InvoiceItem.new(line, self)
+    @invoice_items = file.map do |row|
+      InvoiceItem.new(row, self)
     end
     file.close
   end

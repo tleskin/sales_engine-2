@@ -1,4 +1,5 @@
 require 'bigdecimal'
+require 'bigdecimal/util'
 class Item
 
   attr_reader :id,
@@ -10,14 +11,14 @@ class Item
               :created_at,
               :repository
 
-  def initialize(line, repository)
-    @id = line[:id].to_i
-    @name = line[:name]
-    @description = line[:description]
-    @unit_price = BigDecimal.new(line[:unit_price])/100
-    @merchant_id = line[:merchant_id].to_i
-    @created_at = line[:created_at]
-    @updated_at = line[:updated_at]
+  def initialize(row, repository)
+    @id = row[:id].to_i
+    @name = row[:name]
+    @description = row[:description]
+    @unit_price = BigDecimal.new(row[:unit_price])/100
+    @merchant_id = row[:merchant_id].to_i
+    @created_at = row[:created_at]
+    @updated_at = row[:updated_at]
     @repository = repository
   end
 

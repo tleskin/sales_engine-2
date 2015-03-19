@@ -13,8 +13,8 @@ class ItemRepository
 
   def load_data(path)
     file = load_file(path)
-    @items = file.map do |line|
-      Item.new(line, self)
+    @items = file.map do |row|
+      Item.new(row, self)
     end
     file.close
   end

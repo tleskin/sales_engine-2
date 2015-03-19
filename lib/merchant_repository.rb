@@ -15,8 +15,8 @@ class MerchantRepository
 
   def load_data(path)
     file = load_file(path)
-    @merchants = file.map do |line|
-      Merchant.new(line, self)
+    @merchants = file.map do |row|
+      Merchant.new(row, self)
     end
     file.close
   end

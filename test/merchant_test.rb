@@ -1,8 +1,8 @@
 require_relative '../lib/sales_engine'
 require_relative 'test_helper'
 require './lib/merchant'
-require 'bigdecimal/util'
 require 'bigdecimal'
+require 'bigdecimal/util'
 
 class MerchantTest < Minitest::Test
 
