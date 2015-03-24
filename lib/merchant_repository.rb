@@ -69,7 +69,7 @@ class MerchantRepository
     merchants.select {|merchant| merchant.updated_at == updated_at}
   end
 
-  ## Other methods
+  ## BI methods
 
   def find_items(id)
     sales_engine.find_items_by_merchant_id(id)
@@ -78,4 +78,24 @@ class MerchantRepository
   def find_invoices(id)
     sales_engine.find_invoices_by_merchant_id(id)
   end
+
+  def most_revenue(x)
+    merchants.sort_by do |merchant|
+    merchant.revenue
+    end.reverse.first(x)
+  end
+
+  def most_items(x)
+    merchants.sort_by do |merchant|
+    merchant.quantity_successful_items
+    end.reverse.first(x)
+  end
+
+
+  def revenue(date)
+  merchants.map do |merchant|
+    merchant.revenue(date)
+  end.reduce(:+)
+end
+
 end

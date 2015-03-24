@@ -50,7 +50,11 @@ class Invoice
 
   def revenue
     invoice_items.reduce(0) { |sum, invoice_item|
-      sum + (invoice_item.quantity * invoice_item.unit_price)}
+      sum + invoice_item.revenue}
+  end
+
+  def charge(input)
+    repository.new_charge(input, id)
   end
 
 end

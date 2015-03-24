@@ -1,6 +1,7 @@
 require_relative 'test_helper'
 require './lib/item_repository'
 require 'bigdecimal'
+require_relative '../lib/sales_engine'
 
 class ItemRepositoryTest < Minitest::Test
 
@@ -95,5 +96,30 @@ class ItemRepositoryTest < Minitest::Test
   def test_it_finds_all_by_updated_at
     results = item_repository.find_all_by_updated_at("2012-03-27 14:53:59 UTC")
     assert_equal 19, results.count
+  end
+
+  def test_it_can_find_the_item_with_the_most_revenue
+    sales_engine = SalesEngine.new("./test_fixtures")
+    sales_engine.startup
+    item_repo = sales_engine.item_repository
+    assert_equal Array, item_repo.most_revenue(1).class
+    assert_equal Item, item_repo.most_revenue(1).first.class
+    assert_equal 19, item_repo.most_revenue(1).first.id
+  end
+
+  def test_it_can_return_item_with_most_quantity_sold
+    sales_engine = SalesEngine.new("./test_fixtures")
+    sales_engine.startup
+    item_repo = sales_engine.item_repository
+    assert_equal Item, item_repo.most_items(1).first.class
+    assert_equal 19, item_repo.most_items(1).first.id
+  end
+
+  def test_it_can_return_multiple_items_with_most_quantity_sold
+    sales_engine = SalesEngine.new("./test_fixtures")
+    sales_engine.startup
+    item_repo = sales_engine.item_repository
+    assert_equal Item, item_repo.most_items(2).last.class
+    assert_equal 18, item_repo.most_items(2).last.id
   end
 end
