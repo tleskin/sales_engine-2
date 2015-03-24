@@ -70,11 +70,30 @@ class Merchant
    end
  end
 
+ def quantity_successful_items
+
+   successful_invoice_items = successful_invoices.flat_map do |invoice|
+     invoice.items
+   end.count
+ end
+
 
   private
 
   def successful_invoices
-    successful_invoices = invoices.select {|invoice| invoice.successful?}
+    @successful_invoices ||= invoices.select {|invoice| invoice.successful?}
+  end
+
+  def merchant_transactions
+   @merchant_transactions ||= invoices.flat_map do |invoice|
+     invoice.transactions
+   end
+ end
+
+  def successful_transactions(merchant_trans)
+    @successful_transactions ||= merchant_trans.select do |transaction|
+      transaction.successful?
+    end
   end
 
 end

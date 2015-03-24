@@ -88,4 +88,12 @@ class SalesEngine
     merchant_repository.find_by_id(id)
   end
 
+  def create_new_items_with_invoice_id(items, id)
+    invoice_item_repository.create_new_items(items, id)
+  end
+
+  def new_charge(card_info, id)
+    transaction_repository.new_charge(card_info, id)
+  end
+
 end
