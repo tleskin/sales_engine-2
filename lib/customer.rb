@@ -25,10 +25,19 @@ class Customer
   end
 
   def favorite_merchant
-    successful_invoices = invoices.select {|invoice| invoice.successful?}
-    successful_merchants = successful_invoices.group_by {|invoice| invoice.merchant_id}
-    find_most_successful = successful_merchants.max_by {|merchant| merchant[1].count}
-    favorite_merchant = find_most_successful[-1][0].merchant
+    find_most_successful[-1][0].merchant
+  end
+
+  def successful_invoices
+    invoices.select {|invoice| invoice.successful?}
+  end
+
+  def successful_merchants
+    successful_invoices.group_by {|invoice| invoice.merchant_id}
+  end
+
+  def find_most_successful
+    successful_merchants.max_by {|merchant| merchant[1].count}
   end
 
 end

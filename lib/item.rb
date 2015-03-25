@@ -31,8 +31,7 @@ class Item
   end
 
   def best_day
-    most_sold = invoice_items.max_by { |invoice_item| invoice_item.quantity }
-    date      = most_sold.invoice.created_at
+    most_sold.invoice.created_at
   end
 
   def revenue
@@ -46,7 +45,7 @@ class Item
 
     final_invoice_items = final_invoice_items(successful_invoice_items)
 
-    invoice_item_revenue = final_invoice_items.map do |invoice_item|
+    invoice_item_revenue = final_invoice_items(successful_invoice_items).map do |invoice_item|
       invoice_item.revenue
     end
     invoice_item_revenue.reduce(:+)
@@ -103,5 +102,9 @@ class Item
    @final_invoice_items ||= successful_invoice_items.select do |invoice_item|
     invoice_item.item_id == id
    end
+ end
+
+ def most_sold
+   invoice_items.max_by { |invoice_item| invoice_item.quantity }
  end
 end
