@@ -94,9 +94,9 @@ class Item
  end
 
  def successful_invoice_items(successful_invoices)
-   @successful_invoice_items ||= successful_invoices.map do |invoice|
+   @successful_invoice_items ||= successful_invoices.flat_map do |invoice|
      invoice.invoice_items
-   end.flatten
+   end
  end
 
  def final_invoice_items(successful_invoice_items)

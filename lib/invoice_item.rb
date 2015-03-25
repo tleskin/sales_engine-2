@@ -22,7 +22,6 @@ class InvoiceItem
     @updated_at = row[:updated_at]
     @repository = repository
     @revenue = @unit_price * @quantity.to_i
-
   end
 
   def item

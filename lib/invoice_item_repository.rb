@@ -125,5 +125,4 @@ class InvoiceItemRepository
       invoice_items << new_invoice_item
      end
    end
-
 end

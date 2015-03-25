@@ -38,9 +38,15 @@ class Merchant
   end
 
   def favorite_customer
-    grouped_successful = successful_invoices.group_by {|invoice| invoice.customer_id}
-    find_with_most_invoices = grouped_successful.max_by {|customer| customer[1].count}
-    favorite_customer = find_with_most_invoices[-1][0].customer
+    find_with_most_invoices(grouped_successful)[-1][0].customer
+  end
+
+  def grouped_successful
+    successful_invoices.group_by {|invoice| invoice.customer_id}
+  end
+
+  def find_with_most_invoices(grouped_successful)
+    grouped_successful.max_by {|customer| customer[1].count}
   end
 
   def revenue(date=nil)
@@ -57,7 +63,7 @@ class Merchant
   end
 
  def quantity_successful_items
-   successful_invoice_items = successful_invoices.flat_map do |invoice|
+   successful_invoices.flat_map do |invoice|
      invoice.items
    end.count
  end
