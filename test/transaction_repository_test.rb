@@ -72,6 +72,14 @@ class TransactionRepositoryTest < Minitest::Test
     assert_equal 16, @transaction_repository.all_successful.count
   end
 
+  def test_it_can_talk_to_the_repository_with_invoice
+    repository = Minitest::Mock.new
+    transaction_repository = TransactionRepository.new(repository)
+    repository.expect(:find_invoice_by_id, "sample", [1])
+    assert_equal "sample", transaction_repository.find_invoice(1)
+    repository.verify
+  end
+
   def test_new_charge_creates_a_new_transaction
     sales_engine = SalesEngine.new("./test_fixtures")
     sales_engine.startup

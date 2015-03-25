@@ -112,5 +112,4 @@ class ItemRepository
     item.quantity_sold.nil? ? 0 : item.quantity_sold
     end.reverse.first(x)
   end
-
 end

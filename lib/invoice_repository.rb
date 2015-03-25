@@ -110,18 +110,16 @@ class InvoiceRepository
       status:      inputs[:status],
       created_at:  "#{Date.new}",
       updated_at:  "#{Date.new}",
-            }
+    }
 
     new_invoice = Invoice.new(row, self)
     invoices << new_invoice
 
     sales_engine.create_new_items_with_invoice_id(inputs[:items], new_invoice.id)
     new_invoice
-
   end
 
   def new_charge(card_info, id)
     sales_engine.new_charge(card_info, id)
   end
-
 end

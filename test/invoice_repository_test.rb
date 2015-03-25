@@ -58,6 +58,11 @@ class InvoiceRepositoryTest < Minitest::Test
      assert_equal "2012-03-25 09:54:09 UTC", results.updated_at
   end
 
+  def test_it_finds_all_invoices_by_id
+    results = invoice_repository.find_all_by_id(1)
+    assert_equal 1, results.count
+  end
+
   def test_finds_all_invoices_by_customer_id
     results = invoice_repository.find_all_by_customer_id(1)
     assert_equal 8, results.count
@@ -105,6 +110,22 @@ class InvoiceRepositoryTest < Minitest::Test
     invoice_item_repository = InvoiceItemRepository.new(engine)
     engine.expect(:find_item_by_id, "sample", [1])
     assert_equal "sample", invoice_item_repository.find_item(1)
+  end
+
+  def test_it_can_talk_to_the_sales_engine_with_new_charge
+    sales_engine = Minitest::Mock.new
+    invoice_repository = InvoiceRepository.new(sales_engine)
+    sales_engine.expect(:new_charge, "sample", [1, 2])
+    assert_equal "sample", invoice_repository.new_charge(1, 2)
+    sales_engine.verify
+  end
+
+  def test_it_can_create_an_invoice
+    sales_engine = SalesEngine.new("./data")
+    sales_engine.startup
+    sales_engine.invoice_repository.create(customer: sales_engine.invoice_repository.invoices[0].customer, merchant: sales_engine.invoice_repository.invoices[14].merchant, status: "shipped", items: sales_engine.invoice_repository.invoices[0].items)
+
+    assert_equal 4844, sales_engine.invoice_repository.invoices.last.id
   end
 
 

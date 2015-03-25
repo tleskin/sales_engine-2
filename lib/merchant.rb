@@ -9,7 +9,6 @@ class Merchant
               :updated_at,
               :repository
 
-
   def initialize(row, repository)
     @id = row[:id].to_i
     @name = row[:name]
@@ -27,7 +26,7 @@ class Merchant
   end
 
   def transactions
-    invoices.map {|invoice| invoice.transactions}.flatten
+    invoices.flat_map {|invoice| invoice.transactions}
   end
 
   def pending_transactions
@@ -78,5 +77,4 @@ class Merchant
       transaction.successful?
     end
   end
-
 end

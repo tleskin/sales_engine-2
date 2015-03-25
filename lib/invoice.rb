@@ -17,7 +17,6 @@ class Invoice
     @created_at = Date.parse(row[:created_at])
     @updated_at = row[:updated_at]
     @repository = repository
-
   end
 
   def transactions
@@ -56,5 +55,4 @@ class Invoice
   def charge(input)
     repository.new_charge(input, id)
   end
-
 end

@@ -36,7 +36,6 @@ class Item
   end
 
   def revenue
-
     invoices_transactions = invoices_transactions(items_invoices)
 
     successful_transactions = successful_transactions(invoices_transactions)
@@ -47,8 +46,8 @@ class Item
 
     final_invoice_items = final_invoice_items(successful_invoice_items)
 
-    invoice_item_revenue = final_invoice_items.map do |inv_item|
-      inv_item.revenue
+    invoice_item_revenue = final_invoice_items.map do |invoice_item|
+      invoice_item.revenue
     end
     invoice_item_revenue.reduce(:+)
   end
@@ -65,24 +64,21 @@ class Item
 
    final_invoice_items = final_invoice_items(successful_invoice_items)
 
-   final_invoice_items.flatten.map do |inv_item|
-     inv_item.quantity
+   final_invoice_items.flat_map do |invoice_item|
+     invoice_item.quantity
    end.reduce(:+)
  end
 
-
- private
-
  def items_invoices
-   @items_invoices ||= invoice_items.map do |inv_item|
-     inv_item.nil? ? [] : inv_item.invoice
+   @items_invoices ||= invoice_items.map do |invoice_item|
+     invoice_item.nil? ? [] : invoice_item.invoice
    end.uniq
  end
 
  def invoices_transactions(items_invoices)
-   @invoices_transactions ||= items_invoices.map do |invoice|
+   @invoices_transactions ||= items_invoices.flat_map do |invoice|
      invoice.transactions
-   end.flatten
+   end
  end
 
  def successful_transactions(invoices_transactions)
@@ -104,8 +100,8 @@ class Item
  end
 
  def final_invoice_items(successful_invoice_items)
-   @final_invoice_items ||= successful_invoice_items.select do |inv_item|
-    inv_item.item_id == id
+   @final_invoice_items ||= successful_invoice_items.select do |invoice_item|
+    invoice_item.item_id == id
    end
  end
 end
