@@ -43,16 +43,26 @@ class InvoiceItemRepositoryTest < Minitest::Test
     assert_equal 539, results.item_id
   end
 
-  def test_it_finds_an_invoice_item_by_item_id
-    results = @invoice_item_repository.find_by_item_id(539)
-    assert_equal 539, results.item_id
+  def test_it_finds_an_invoice_item_by_invoice_id
+    results = @invoice_item_repository.find_by_invoice_id(1)
+    assert_equal 1, results.invoice_id
+  end
+
+  def test_it_can_find_by_unit_price
+    result = @invoice_item_repository.find_by_unit_price(BigDecimal.new(23324)/100)
+    assert_equal "233.24", result.unit_price.to_digits
+  end
+
+  def test_it_can_find_all_by_unit_price
+    result = invoice_item_repository.find_all_by_unit_price(BigDecimal.new(72018)/100)
+    assert_equal 3, result.count
   end
 
   def test_it_finds_an_invoice_item_created_at
     results = @invoice_item_repository.find_by_created_at("2012-03-27 14:54:09 UTC")
     assert_equal "2012-03-27 14:54:09 UTC", results.created_at
   end
-  
+
   def test_it_finds_an_invoice_item_by_updated_at
 
     results = invoice_item_repository.find_by_updated_at("2012-03-27 14:54:09 UTC")

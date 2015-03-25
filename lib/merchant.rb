@@ -44,19 +44,6 @@ class Merchant
     favorite_customer = find_with_most_invoices[-1][0].customer
   end
 
-  ##revenue returns the total revenue for that merchant across all transactions
-  # def revenue
-  #   repository.
-  #
-  #   #get access to merchants items
-  #   #get access to merchants quantity sold
-  #   #calculation = items(unit price) * quanity(Invoice_item)
-  # end
-  #
-  # def revenue(date = nil)
-  #
-  # end
-
   def revenue(date=nil)
    if date.nil?
      successful_invoices.reduce(0) {| sum, invoice |
@@ -68,17 +55,13 @@ class Merchant
         sum + invoice.revenue
       }
    end
- end
+  end
 
  def quantity_successful_items
-
    successful_invoice_items = successful_invoices.flat_map do |invoice|
      invoice.items
    end.count
  end
-
-
-  private
 
   def successful_invoices
     @successful_invoices ||= invoices.select {|invoice| invoice.successful?}
@@ -90,8 +73,8 @@ class Merchant
    end
  end
 
-  def successful_transactions(merchant_trans)
-    @successful_transactions ||= merchant_trans.select do |transaction|
+  def successful_transactions(merchant_transactions)
+    @successful_transactions ||= merchant_transactions.select do |transaction|
       transaction.successful?
     end
   end

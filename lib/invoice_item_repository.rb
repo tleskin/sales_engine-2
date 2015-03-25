@@ -42,7 +42,7 @@ class InvoiceItemRepository
   end
 
   def find_by_invoice_id(invoice_id)
-    invoice_items.detect {|item| item.item_id == item_id}
+    invoice_items.detect {|item| item.invoice_id == invoice_id}
   end
 
   def find_by_quantity(quantity)
@@ -110,6 +110,7 @@ class InvoiceItemRepository
        quantity = grouped_items.flat_map do |item|
          item.count
        end.uniq.join
+
        row = {
          id:         "#{invoice_items.last.id + 1}",
          item_id:    item.id,

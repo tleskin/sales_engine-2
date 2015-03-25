@@ -1,5 +1,6 @@
 require_relative 'test_helper'
 require './lib/invoice_repository'
+require './lib/sales_engine'
 
 class InvoiceRepositoryTest < Minitest::Test
 
@@ -81,5 +82,31 @@ class InvoiceRepositoryTest < Minitest::Test
     results = invoice_repository.find_all_by_updated_at("2012-03-25 09:54:09 UTC")
     assert_equal 1, results.count
   end
+
+  def test_invoice_repo_has_a_create_method
+    sales_engine = SalesEngine.new('./test_fixtures')
+    sales_engine.startup
+    invoice_repo = sales_engine.invoice_repository
+    assert invoice_repo.respond_to?(:create)
+  end
+
+  def test_new_charge_creates_a_new_transaction
+    sales_engine = SalesEngine.new("./test_fixtures")
+    sales_engine.startup
+    invoice_repo = sales_engine.invoice_repository
+    prior_transactions = sales_engine.transaction_repository.transactions.count
+    invoice_repo.invoices.first.charge(credit_card_number: "4444333322221111", credit_card_expiration: "10/13", result: "success")
+    current_transactions = sales_engine.transaction_repository.transactions.count
+    assert current_transactions > prior_transactions
+  end
+
+  def test_it_can_talk_to_the_sales_engine_with_find_item
+    engine = Minitest::Mock.new
+    invoice_item_repository = InvoiceItemRepository.new(engine)
+    engine.expect(:find_item_by_id, "sample", [1])
+    assert_equal "sample", invoice_item_repository.find_item(1)
+  end
+
+
 
 end

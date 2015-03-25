@@ -1,5 +1,6 @@
 require_relative 'test_helper'
 require_relative '../lib/transaction_repository'
+require './lib/sales_engine'
 
 class TransactionRepositoryTest < Minitest::Test
 
@@ -65,5 +66,19 @@ class TransactionRepositoryTest < Minitest::Test
   def test_it_finds_all_by_result
     results = @transaction_repository.find_all_by_result("success")
     assert_equal 16, results.count
+  end
+
+  def test_it_finds_all_successful_transactions
+    assert_equal 16, @transaction_repository.all_successful.count
+  end
+
+  def test_new_charge_creates_a_new_transaction
+    sales_engine = SalesEngine.new("./test_fixtures")
+    sales_engine.startup
+    invoice_repo = sales_engine.invoice_repository
+    prior_transactions = sales_engine.transaction_repository.transactions.count
+    invoice_repo.invoices.first.charge(credit_card_number: "4444333322221111", credit_card_expiration: "10/13", result: "success")
+    current_transactions = sales_engine.transaction_repository.transactions.count
+    assert current_transactions > prior_transactions
   end
 end

@@ -48,4 +48,13 @@ class TransactionTest < Minitest::Test
   def test_it_has_an_updated_date
     assert_equal "2012-03-27 14:54:09 UTC", transaction.updated_at
   end
+
+  def test_it_can_return_if_transaction_is_successful
+    assert_equal true, transaction.successful?
+  end
+
+  def test_it_can_return_if_transaction_is_pending
+    refute_equal true, transaction.pending?
+  end
+
 end
